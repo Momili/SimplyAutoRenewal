@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>SIMPLY AUTO RENEWAL</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="HandheldFriendly" content="true">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Import CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/index.css">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">	
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.scrollto.min.js"></script>
+    <script src="js/slabtext.min.js"></script>
+    <script src="js/jquery.nav.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	
+    <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-83797530-1', 'auto');
+	  ga('require', 'linkid');
+	  ga('send', 'pageview');
+    </script>
+	
+    <style> 	   
+       .footer{ 
+            position: absolute;     
+            text-align: center;    
+            bottom: 0px; 
+            width: 90%;
+        }          
+ 	.ui-dialog-titlebar{ 
+            display: none !important;
+	}		
+    	.carousel-inner > .item > img,
+  	.carousel-inner > .item > a > img {
+            width: 100%;
+            margin: auto;
+  	}
+	.carousel-control.left, .carousel-control.right {
+            background-image: none
+	}
+	.carousel-indicators li {
+            background: #ccc;
+	}
+	.carousel-indicators .active {
+            background: #666;
+	}        
+        .etsy-tm{
+            font-size:  smaller;
+            font-style:  italic;
+            color:#9d9d9d; 
+            width:700px; 
+            margin:auto;
+        }	    	
+    	.features:hover{
+            opacity: 0.9;
+            border-radius: 20px;
+            box-shadow: 4px 4px 4px #888888;
+            background:#ccc;
+            color:#000000!important;
+        }
+        
+        .img-help{
+            border-left:  1px solid silver;
+            border-top:  1px solid silver;
+            border-radius: 20px;
+            box-shadow: 4px 4px 4px #888888;
+            margin: auto;
+        } 
+        .txt-help{
+            border:1px solid #888888;
+            border-radius: 10px;
+            margin-top:5px;
+        }        
+        .txt-help, help-title{
+            padding: 10px 20px 10px 20px;
+        } 
+        #a-signin{
+            cursor: pointer; 
+        }  
+        .service-item{
+            margin:auto;
+            margin-bottom: 100px;
+            width:80%;
+        }      
+    </style>
+</head>
+
+<!-- To change color change the class "color-1" to "color-2, color-3 ... color-6" -->
+<body class="home color-7">
+    <div id="header">
+        <div class="container">
+            <div class="row">
+		<i id="nav-button" class="icon-circle-arrow-down"></i>
+		<h2 id="logo"><a href="index.html">Simply &nbsp;<span class="highlight">Auto</span>&nbsp;Renewal</a></h2>				
+		<div id="top-nav" class="">
+                    <ul id="fixed-nav">
+			<li class="current"><a id='menu-home' href="#home">Home</a></li>
+			<li><a id='menu-services' href="#services">Features</a></li>
+                        <li><a id='menu-howto' href="#howto">How to</a></li>
+			<li><a id='menu-aboutus' href="#aboutus">About Us</a></li>
+			<li><a id='menu-signin' href="#signin"><h3>Sign In</h3></a></li>
+                        
+                    </ul>
+		</div>
+            </div>
+	</div>
+    </div>
+    <!-- End Header -->
+		
+    <!-- Big Full screen Banner -->
+    <div class="hero bg-fixed bg-color" id="home">	
+                    <div class="slogan">
+			<div  class="vcenter container">	
+                            <div class="row">
+				<div class="span12">
+                                    <img src="images/help/logo.png" alt="">                                    
+                                    <h1>Simply auto renewal</h1>
+                                    <h2>Simple to use powerful Auto renewal scheduler for your shop listings on ETSY</h2>
+				</div>                                
+                            </div>
+			</div>
+                    </div>
+		</div>
+    <!-- End Full screen banner  -->
+		
+    <!-- Features Section -->
+    <!-- class section-alt is to give a different color please edit css/style.css to change the color -->
+    <div class="section section-alt" id="services">
+        <div class="container" style="width:80%;">
+			<div class="content" >
+                            <div class="title">
+				<h2>Features</h2>
+				<div class="hr hr-small hr-center"><span class="hr-inner"></span></div>
+                                <h6>no payment required - join free for a month</h6>
+                            </div>
+                            <div class="row">                                
+
+	                    </br>	                    
+                            </div>
+			<div class="row">
+	                    <div class="span4 i-block features">
+	                        <i class="icon-check"></i>
+				<h3>select</h3>
+				<p>Select specific items, the most viewed items, about to expire items, random items or items based on keywords.</p>
+	                    </div>					
+	                    <div class="span4 i-block features">
+				<i class="icon-globe"></i>
+				<h3>Time zone</h3>
+				<p>Schedule your items on different time-zones to reach your clients all over the world.</p>
+	                    </div>
+	                    <div class="span4 i-block features">
+				<i class="icon-time"></i>
+				<h3>schedule</h3>
+	                            <p class="text-center">Schedule automated renewals for your Etsy shop listings and free up your time.</p>
+				</div>
+	                    </div>
+	            <div class="hr hr-invisible"></div>
+	                <div class="row">
+	                    <div class="span4 i-block features">
+	                        <i class="icon-tablet"></i>
+				<h3>tablet</h3>
+				<p>Designed to work on most popular tablets.</p>
+	                    </div>
+	                    <div class="span4 i-block features">
+	                        <i class="icon-dollar"></i>
+	                        <h3>sales</h3>
+	                        <p>Improve your listings exposure and push them to the top of their category to increase your sales.</p>
+	                    </div>
+	                    <div class="span4 i-block features" >
+	                        <i class="icon-smile"></i>
+	                        <h3>Satisfaction</h3>
+	                        <p>Guaranteed!</p>                                               
+	                    </div>
+			</div>
+			</div>
+			</div>
+		</div>
+    <!-- End Features Section -->	
+    
+    <!-- How to Section -->
+    <div class="section" id="howto">
+                    <div class="container">
+            
+        <div class="dialog-service">
+                    </br>
+
+                            <!-- Wrapper for slides -->
+                            
+
+                                    <div class="service-item">
+                                            <p class="txt-help">Selecting items is straightforward and easy. After you sign-in, all of the items in your shop are displayed automatically.</p> 
+                                    <img class="img-help" alt="" src="images/help/ren-select.png" > 
+                                    </div>
+
+                                    <div class="service-item">
+                                            <p class="txt-help">You can search as you type for any item on your list</p>
+                                            <img class="img-help" src="images/help/ren-filter.png" alt="" >
+                                    </div>
+
+                                    <div class="service-item">        
+                                            <p class="txt-help">
+                                            By default, your items are displayed from the oldest to the newest.</br>
+                                            To change the sort order, click on the 'Price' title to select your most expensive items, click on the 'Views' 
+                                            title to choose from your most viewed items, or click on the 'Likes' title to see your shop's most liked items.
+                                            </p>
+                                            <img class="img-help" src="images/help/ren-order.png" alt="" >
+                                    </div>
+
+                                    <div class="service-item">        		
+                                            <p class="txt-help">Feeling lazy? Click on 'PICK RANDOM' and let SIMPLY AUTO RENEWAL to choose an item for you.</p>
+                                                    <img class="img-help" src="images/help/ren-random.png" alt="" >
+                                            </div>
+
+                                            <div class="service-item">        		
+                                            <p class="txt-help">Images of the items you have chosen are displayed within the frame below.</br>Review your list, if you want to make any changes click on an item;s image to un-select.</p>
+                                                    <img class="img-help" src="images/help/ren-review.png" alt="" >
+                                            </div>			
+
+
+                            
+
+        </div>
+
+        <div class="dialog-service">
+            </br>
+                    
+
+                            <!-- Wrapper for slides -->
+
+
+                                    <div class="service-item">
+                                            <p class="txt-help">Scheduling is smart and flexible.</br>After you've selected and reviewed your items for renewal, choose the time zone (optional), set the date and the time, and click on SCHEDULE.</p> 
+                                    <img alt="" class="img-help" src="images/help/ren-schedule1.png" > 
+                                    </div>
+
+                                    <div class="service-item">
+                                            <p class="txt-help">To set your renewals to repeat, choose how often and for how many times.</p>
+                                            <img class="img-help" src="images/help/ren-schedule2.png" alt="" >
+                                    </div>
+                            
+                            <div class="service-item">
+            <p class="txt-help">
+                    Select a time zone from the list, set the date/time and let SIMPLY AUTO RENEWAL do the time conversion.</br>
+
+                            For example: You live in San Francisco, USA and your targeted clients are in Paris, France.</br>
+                            You think the best time to have fresh renewals would be August 15th around 11:10 AM.</br>
+                            Set the time zone to Central European Time, pick the date from the calendar and set the time.</br>
+                            Simply Auto renewal will calculate the time conversion and will renew your listings on the </br>15th of August at 11:10 AM Paris, France time. 
+                    </p>
+
+            <img alt="" class="img-help" src="images/help/timezone.png" >
+        </div>
+
+                                    <div class="service-item">        
+                                            <p class="txt-help">Keep track of your scheduled renewals, if you changed your mind, you can cancel individual items or cancel them all.</p>
+                                                    <img class="img-help" src="images/help/scheduled.png" alt="" >
+                                    </div>
+
+                                    <div class="service-item">        		
+                                            <p class="txt-help">SIMPLY AUTO RENEWAL helps you to oversee your Etsy renewals spendings up-to-date per month.</p>
+                                                    <img class="img-help" src="images/help/completed.png" alt="" >
+                                            </div>					
+                           
+       </div> 
+            
+        
+
+        
+        <div class="service-item">
+            <p class="txt-help">
+               SIMPLY AUTO RENEWAL is designed to work with most popular tablets, you can schedule your renewals from anywhere and anytime at your convenience.             
+                    </p>
+            <img alt="" class="img-help" src="images/help/tablet.png" >	        
+        </div> 
+                        
+        <div class="service-item">
+            <p class="txt-help">
+               You can add multiple Etsy stores and manage them under one SIMPLY AUTO RENEWAL account at only $4.00 USD per month and schedule unlimited renewals during that period.  
+                    </p>
+            <img class="img-help" alt="" src="images/help/settings.png" > 
+        </div>
+
+          
+
+            <div class="service-item">
+            <img class="img-help" alt="" src="images/help/satisfaction.png" > 
+            <p class="txt-help">
+                Did we miss something? </br>We are dedicated to our customers.</br> 
+                If there is a feature you wish we had or if something is not working the way you want it to, please let us know!</br>
+                We'll do our best to accommodate your needs.
+                    </p>
+            <address>
+                Contact: <a href="mailto:simplyautorenewal@gmail.com">SIMPLY AUTO RENEWAL Support</a><br>
+            </address>
+        </div>
+        </div>
+                </div>
+    <!-- End How to Section -->    
+                
+    <!-- About Us section -->
+    <div class="section" id="aboutus">
+		<div class="container" >
+                    <div class="content">
+                        <div class="row">
+                            <div class="span12" >
+                                <div class="title">
+                                    <h2>About Us</h2>
+                                    <div class="hr hr-small hr-center"><span class="hr-inner"></span></div>
+                                    <p>The most important thing to us is building products people love.</p>
+	        		</div>
+				<p class="txt-help" style="max-width:700px; margin:auto;">
+                                    Hello,</br></br>
+                                    <b>SIMPLY AUTO RENEWAL</b> tool was built upon a request from Etsy shop owners who were looking for a easy-to-use tool to schedule their renewals.</br>
+				    Although there are several auto renewal tools out there, apparently they are too complicated to use especially for non-tech folks.</br> 
+				    Therefore I, a software developer veteran with quite a few years of experience under my belt, accepted the challenge.</br>
+                                    Here is the result; <b>SIMPLY AUTO RENEWAL</b> tool which was build having ‘Don't Make Me Think'; a common sense approach in mind.</br> 
+				    Simple to use intuitive tool with flexible and powerful capabilities.</br>
+				    It’s <b>free</b> for the first month and only $4.00 USD per month afterwards.</br>
+				    Give it a try and let us know what you think?</br>							
+				    We'd love to hear your feedback.</br></br>					
+				    Cheers and Happy Sales,</br>
+				    Hurley Mistrall
+				    </br></br>
+                                    Contact: <a href="mailto:simplyautorenewal@gmail.com">SIMPLY AUTO RENEWAL Support</a><br></br>            				
+                                    <p class="etsy-tm">The term 'Etsy' is a trademark of Etsy, Inc.  This application uses the Etsy API but is not endorsed or certified by Etsy, Inc.<p>
+                                </p>													
+                            </div>
+			</div>
+		    </div>
+		</div>
+            </div>
+    <!-- End About US -->
+		
+    <!-- Sign in Section -->
+    <div class="section" id="signin" >
+	<div class="container">
+				<div class="content">
+					<div class="row">
+						<div class="span12">
+							<div class="title">
+		                        <h3>Sign in with your Google Account</h3>
+		                        <h6>no payment required - join free for a month</h6>
+                                        
+		                        <h6><a id="a-signin" >How to Sign In?</a></h6>
+		                        <div class="hr hr-small hr-center"><span class="hr-inner"></span></div>                                                        
+                                        <div id="login" style="height:300px;"></div> 
+	                            <div class="span12" style="text-align:left;">
+					<p class="txt-help" style="max-width:800px; margin:auto;font-size:  medium;">
+                                            SIMPLY AUTO RENEWAL uses a Google Account to sign in.</br>
+		                        A Google Account is your Gmail account (@gmail.com).<br/>
+		                        If you don't have a Gmail Account, you can create a Google account without Gmail using any existing email address you already have (e.g. @msn.com or @yahoo.com).</p>
+		                        <div class="hr hr-small hr-center"><span class="hr-inner"></span></div>
+		                            <p style="text-align:center;"><a href="https://accounts.google.com/SignUpWithoutGmail">Create a Google account without Gmail</a> </p>
+	                            </div>
+	                        </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    <!-- End Sign in Section -->	                
+                
+    <div id="footer">
+        &copy; 2016 Hurley Mistrall Solutions. Designed with lots of care & love.
+    </div> 
+    
+    <div id="dialog-signin">
+	    	<br>
+	  		<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+		    <!-- Indicators -->
+		    <ol class="carousel-indicators">
+		      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		      <li data-target="#myCarousel" data-slide-to="1"></li>
+		      <li data-target="#myCarousel" data-slide-to="2"></li>
+		      <li data-target="#myCarousel" data-slide-to="3"></li>
+		      <li data-target="#myCarousel" data-slide-to="4"></li>
+		      <li data-target="#myCarousel" data-slide-to="5"></li>
+		      <li data-target="#myCarousel" data-slide-to="6"></li>
+		      <li data-target="#myCarousel" data-slide-to="7"></li>
+		    </ol>
+	
+	    	<!-- Wrapper for slides -->
+	    	<div class="carousel-inner" role="listbox">
+	      		
+	      		<div class="item active">
+	      			<p class="txt-help">1. To sign in to SIMPLY AUTO RENEWAL click on <b>SIGN IN</b> at the top of the page.</p>
+	        		<img alt="" src="images/help/signin1.png">        		      	                
+	      		</div>
+	
+	      		<div class="item">
+	      			<p class="txt-help">
+	            		2. Then click the <b>Sign In with Google</b> button. You will be taken to a Google login page where you can sign in to SIMPLY AUTO RENEWAL with your Gmail account and password.             
+					</p>
+	        		<img src="images/help/signin2.png" alt="" >
+	      		</div>
+	    
+	      		<div class="item">        
+	        		<p class="txt-help">
+	           			3. Sign in into your Google account, the login process occurs on Google's site.</br>
+	           			This is done to provide a high level of security for your credentials, and also to eliminate the need to register for another username and password.</br>
+	           			<b>SIMPLY AUTO RENEWAL will NOT have access to your Google password.</b>
+					</p>
+					<img src="images/help/signin3.png" alt="" >
+	      		</div>
+	
+	      		<div class="item">        		
+	        		<p class="txt-help">
+	            		4. To finish Google authentication, click on <b>Allow</b> button.
+	           			Google will redirect you back to SIMPLY AUTO RENEWAL.                                   
+					</p>
+					<img src="images/help/signin4.png" alt="" >
+				</div>
+			
+				<div class="item">        		
+	        		<p class="txt-help">           
+	           			5. In order to use SIMPLY AUTO RENEWAL tool you must first grant access to your Etsy account.</br>		
+	           			Click the <b>AUTHORIZE ACCESS TO YOUR SHOP</b> button to start the process of connecting your shop.            
+					</p>
+					<img src="images/help/signin5.png" alt="" >
+				</div>
+				
+				<div class="item">        		
+	        		<p class="txt-help">
+	           			6. Next, sign in to your Etsy account.             
+					</p>
+					<img src="images/help/signin6.png" alt="" >
+				</div>
+			
+				<div class="item">        		
+	       			<p class="txt-help">
+	            		7. Then, click the <b>Allow Access</b> button.            
+					</p>
+					<img src="images/help/signin7.png" alt="" >
+	      		</div>
+	      
+	      		<div class="item">        		
+	        		<p class="txt-help">
+	           			8. After successful authorization you should now see your Etsy shop in SIMPLY AUTO RENEWAL.</br>
+					</p>
+					<img src="images/help/step8.png" alt="" >
+	      		</div>
+	    	</div>
+	
+	    	<!-- Left and right controls -->
+	    	<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+	      	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	      	<span class="sr-only">Previous</span>
+	    	</a>
+		    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+		      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		      <span class="sr-only">Next</span>
+		    </a>
+	  </div>
+	   <p class='footer'><a href='javascript:closeDialog("#dialog-signin");'>CLOSE</a></p> 	
+	    	
+	    </div>
+    
+    <script>
+	    	var closeDialog=function(id){
+                    $(id).dialog('close');
+	    	};	    		
+	            
+	            $( "#dialog-signin" ).dialog({ title: 'SIMPLY AUTO RENEWAL - How to Sign In', autoOpen: false, modal: true ,minHeight: 700, minWidth:800, maxWidth:800});
+	            $( "#a-signin" ).click(function() {
+	                $( "#dialog-signin" ).dialog( "open" );
+	            });
+	        </script>
+</body>
+</html>

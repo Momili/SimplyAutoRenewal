@@ -1,0 +1,142 @@
+domain changes:
+--------------
+login.php
+=========================================================
+//local
+$redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].dirname(strtok($_SERVER['REQUEST_URI'],'?')).'/login.php/';
+//bluehost
+//$redirect_uri = 'http://www.simplyautorenewal.com/login.php/';
+
+
+db_connection.php
+=========================================================
+/* BlueHost
+private $host = "localhost"; 
+private $db_name = "blendinc_Etsy"; 
+private $username = "blendinc_etsy"; private $password = "Backbreaker12!"; 
+*/
+    
+/*work    
+private $host = "localhost:3306"; 
+private $db_name = "blendinc_etsy"; 
+private $username = "root"; private $password = "";
+*/
+//Home    
+private $host = "localhost:3306"; 
+private $db_name = "etsy"; 
+private $username = "root"; private $password = "sa";
+//
+
+constants.php
+=========================================================
+
+//local
+define("MY_DOMAIN", "SimplyAutoRenewal/");
+//
+/* blue host
+define("MY_DOMAIN", "");  
+ */
+
+/* PAYPAL PRODUCTION
+ define("API_UserName","braggin.dragons_api1.gmail.com");
+ define("API_Password","P54QC5S84XREVPT9");
+ define("API_Signature","AFcWxV21C7fd0v3bYYYRCpSSRl31ACoH.iQhQ-NxP32w4StMZa0wSz5Q");
+ */
+
+//PAYPAL SANDBOX
+define("API_UserName","braggin.dragons-facilitator_api1.gmail.com");
+define("API_Password","EHC2ZD69WBTY3A3L");
+define("API_Signature","AiPC9BjkCyDFQXbSkoZcgqH3hpacAYXi8L.se3jJWlq0prIH4.T3a0J1");
+//
+
+etsy_oauth_request.php
+=========================================================
+// local
+$redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].dirname(strtok($_SERVER['REQUEST_URI'],'?')).'/etsy_get_token.php';    
+//
+/* BlueHost
+$redirect_uri = 'http://www.simplyautorenewal.com/etsy_get_token.php';
+*/
+
+
+main.js
+=========================================================
+window.location.href='/SimplyAutoRenewal/login.php?logout=1#/';
+
+pay_pal.php
+=========================================================
+ //'------------------------------------
+        //' The returnURL is the location where buyers return to when a
+        //' payment has been succesfully authorized.
+        //'
+        //' This is set to the value entered on the Integration Assistant 
+        //'------------------------------------
+        // local
+        $returnURL = "http://localhost:8080/SimplyAutoRenewal/main.html#/payment";
+        //
+        /* bluehost
+        $returnURL = "http://www.simplyautorenewal.com/main.html#/payment";
+        */
+        //'------------------------------------
+        //' The cancelURL is the location buyers are sent to when they hit the
+        //' cancel button during authorization of payment during the PayPal flow
+        //'
+        //' This is set to the value entered on the Integration Assistant 
+        //'------------------------------------
+        //local
+        $cancelURL = "http://localhost:8080/SimplyAutoRenewal/main.html#/";
+        //
+        /*blue host
+        $cancelURL = "http://www.simplyautorenewal.com/main.html#/";
+        */
+
+expresscheckout.php
+=========================================================
+//'------------------------------------
+//' The returnURL is the location where buyers return to when a
+//' payment has been succesfully authorized.
+//'
+//' This is set to the value entered on the Integration Assistant 
+//'------------------------------------
+$returnURL = "http://localhost:8080/SimplyAutoRenewal/main.html#/success";
+//$returnURL = "http://www.simplyautorenewal.com/main.html#/success";
+
+//'------------------------------------
+//' The cancelURL is the location buyers are sent to when they hit the
+//' cancel button during authorization of payment during the PayPal flow
+//'
+//' This is set to the value entered on the Integration Assistant 
+//'------------------------------------
+$cancelURL = "http://localhost:8080/SimplyAutoRenewal/main.html#/";
+//$cancelURL = "http://www.simplyautorenewal.com/main.html#/";
+
+
+success.js
+=========================================================
+
+$scope.pay=function(){  
+        $http.get('models/confirm_payment.php').success(function (response) {
+            $scope.message = response;
+            if($scope.message==='SUCCESS'){
+            	$scope.makePayment();
+            }else{
+            	alert('We\'re sorry, something went wrong.\r\n Please try again.');
+                //local
+                window.location.href = "http://localhost:8080/SimplyAutoRenewal/main.html#/";
+                //
+                /*bluehost
+                window.location.href ="http://www.simplyautorenewal.com/main.html#/";
+                */
+            }
+        });  
+    };   
+   	
+    $scope.cancel=function(){ 
+        //local
+    	window.location.href = "http://localhost:8080/SimplyAutoRenewal/main.html#/";
+        //
+        /* bluehost
+         window.location.href ="http://www.simplyautorenewal.com/main.html#/"; 
+        */
+    };      
+

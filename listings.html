@@ -1,0 +1,636 @@
+<div class="panel panel-default" ng-controller="listingsController">  
+
+    <div class="input-group  col-xs-4" style="padding:15px; width:100%; background-color:#dcd0c0;">
+        <img class="img-rounded" style="float:left; border:1px solid #757575;" ng-src="{{shopImgUrl}}" alt="" height='65' width='65'>
+            
+            
+        <select ng-model="mySectionsFilter.shop_section_id" name="repeatSelect" id="repeatSelect" class="form-control" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;" >
+                <option value="">all Items ({{myListings.length}})</option>
+                <option ng-repeat="section in mySections" value="{{section.shop_section_id}}">{{section.title}}</option>
+            </select>
+        <input type="text" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;" class="form-control" id="listingFilter" ng-model="myListingsFilter.Title" placeholder="search by title">                  	                                  
+                        
+        <select class="form-control input-group col-xs-2" id="sort-by" ng-model="sortByItem" ng-change="sortListings2()" ng-init="sortByItem = 1" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;">
+                <option value="1">oldest items first</option>
+                <option value="2">newest items first</option>
+                <option value="3">lowest price items first</option>
+                <option value="4">highest price items first</option>                
+                <option value="6">most viewed items first</option>
+                <option value="5">least viewed items first</option>
+                <option value="8">most liked items first</option>
+                <option value="7">least liked items first</option>
+            </select>
+    </div>
+    <table class="table table-hover table-condensed table-responsive table-fixed table-listings">
+        <thead style="background-color: #4abdac; color:#dfdce3;">
+            <tr>
+                <th>&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-6" style="color:#dfdce3;">Title</th>
+                <th class="col-xs-1"><a style="color:#dfdce3;" class="listing-title" ng-click="sortListings('Price')">Price</a></th>
+                <th class="col-xs-1"><a style="color:#dfdce3;" class="listing-title" ng-click="sortListings('Views')">Views</a></th>
+                <th class="col-xs-1"><a style="color:#dfdce3;" class="listing-title" ng-click="sortListings('Likes')">Likes</a></th>
+                <th class="col-xs-4"><a style="color:#dfdce3;" class="listing-title" ng-click="sortListings('ExpiryDate')">Expires</a></th>
+            </tr>
+	</thead>
+    </table>
+    <img id="mySpinner" src="images/loading.gif" style='display:block; margin:auto;' ng-show="loading" />
+    <div style="overflow-y:auto; height:400px; width:100%;">
+    <table class="table table-hover table-condensed table-responsive table-fixed table-listings" >
+        <tbody>
+            <tr class="listing-row" ng-repeat="listing in myListings | filter: myListingsFilter | filter: mySectionsFilter" ng-class="(listing.selected) ? 'warning' : ''">
+                <td><input type="checkbox" ng-model="listing.selected" ng-change="removeRandom(listing)"/></td>
+                <td class="col-xs-1" ng-click="selectItem(listing)"><img class="img-rounded" src='{{ listing.ImageUrl }}' alt="{{listing.ItemID}}" height='75' width='75'></td>
+                <td class="col-xs-6" ng-click="selectItem(listing)">{{ listing.Title }}</td>
+                <td class="col-xs-1" ng-click="selectItem(listing)" style="color:#2e7d32;">{{ listing.Price | currency:"USD$" }}</td>
+                <td class="col-xs-1" ng-click="selectItem(listing)" style="color:#0277bd;">{{ listing.Views }}</td>
+                <td class="col-xs-1" ng-click="selectItem(listing)" style="color:#ff8f00;">{{ listing.Likes }}</td>
+                <td class="col-xs-4" ng-click="selectItem(listing)" ng-class="getCssClass(listing.ExpiryDate)">{{ listing.ExpiryDate.replace(' ','T') | date:'longDate' }} {{ listing.ExpiryDate.replace(' ','T') | date:'shortTime' }}</td>
+            </tr>
+	</tbody>
+    </table>    				
+    </div>
+	
+    <div style="height:auto; padding:12px; margin:10px; border:1px solid #ffe; background-color:#bdbdbd; border-radius:10px;" >
+    
+    <div class="selection-pnl" style="padding-left:12px;">
+            <!--<button class="btn btn-large btn-warning"  ng-click="pickRandom()" type="button" >RANDOM ITEM</button>	-->
+            <button class="btn btn-large btn-info"  style="margin:10px;" ng-click="quickPick()" type="button" >QUICK PICK</button>
+            <button type="button" class="btn btn-inverse" style="background-color: #000000; color:white;" ng-click="clearAll();">CLEAR ALL</button>
+            <!--
+            <br/>
+            <ol class="align">
+                <li class="align"><span class="help-block" style="text-align: right;">Renew selected {{itemsCount}} item(s) below</span></li>
+            </ol>
+            -->
+            <div class="selection-pnl" style="min-height:85px; padding:2px; margin-bottom:15px; border:1px solid silver; border-radius: 10px; background-color:#fff;" >	   
+                <img ng-repeat="listing in myListings | filter:listing.selected!==false" ng-click="removeSelected(this);" class="img-rounded img-selected" src='{{ listing.ImageUrl }}' height='75' width='75' />		
+            </div>
+        </div>
+    
+    <div id="dialog" class="alert alert-success" style="display:none; width:50%; margin: 0 auto;"></div>
+    
+     <div>
+         <ol class="align">
+             <li class="align">
+                <span class="help-block" style="width:80px;">Time zone</span>
+             </li>
+             <li class="align">
+                <select class="form-control input-group col-xs-6" id="zone-list" onchange="setSelectedTimeZone()">                
+                    <option value="-8">Pacific Time - British Columbia, California, Washington</option>
+                    <option value="-7">Mountain Time - Colorado, Montana, Utah</option>
+                    <option value="-6">Central Time - Illinois, Texas, Manitoba, Mexico</option>                
+                    <option value="-5">Eastern Time - Boston, New York, Toronto, Montreal</option>                
+                    <option value="-4">Atlantic Time - New Brunswick, Nova Scotia, Bermuda</option>                
+                    <option value="0">Western European Time - Portugal, Morocco</option>                
+                    <option value="1">Central European Time - France, Germany, Italy</option>
+                    <option value="2">Eastern European Time - Bulgaria, Finland, Lithuania</option>
+                    <option value="3">Further-eastern European Time - Belarus, Moscow</option>
+                    <option value="4">Gulf Standard Time - Oman, United Arab Emirates </option>
+                    <option value="8">China Standard Time - China, Macau, Taiwan </option>
+                    <option value="9">Japan Standard Time - Japan Standard Time </option>
+                    <option value="10">Australian Eastern Standard Time - Australia </option>            
+                </select>                 
+             </li>
+         </ol>
+    </div>
+    
+    <div>
+    <ol class="align">
+        <li class="align"><span class="help-block" style="width:80px;">Schedule</span></li>
+        <li class="align">
+        <select class="form-control input-group col-xs-6" id="schedule-times" >
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        </select>
+        </li>
+        <li class="align">
+        <select class="form-control input-group col-xs-6" id="schedule-items">
+        <option value="S">selected {{itemsCount}} item(s) above</option>
+        <option value="R">random items</option>
+        <option value="O">oldest items</option>
+        <option value="N">newest items</option>
+        <option value="L">lowest price items</option>
+        <option value="H">highest price items</option>        
+        </select>
+        </li>
+        <li class="align"><span class="help-block">for renewal</span></li>   
+    </div>
+    
+    
+   
+    <!--
+    <div>
+         <ol class="align">  
+             <li class="align"><span class="help-block" style="width:80px;">Repeat</span></li>
+           <li class="align"><span class="help-block" style="margin:2px 10px; border:1px solid green;"><input id="renew-once"   name="renew-type" title="Repeat once" type="radio" value="1" checked="checked">&nbsp;one time</span></li> 
+           <li class="align"><span class="help-block" style="margin:2px 20px; border:1px solid green;"><input id="renew-repeat" name="renew-type" title="Repeat every" type="radio" value="2" >&nbsp;every</span></li> 
+         </ol>
+    </div>
+    -->
+    
+    <div>
+        <ol class="align">  
+            <li class="align">
+                <span class="help-block" style="width:80px;">Repeat</span>
+            </li>
+            <li class="align">
+                <select class="form-control" id="repeat" ng-model="repeatOption" ng-change="renewMessage()" ng-init="repeatOption=1">
+                    <option value="1" selected="selected">one time</option>
+                    <option value="2">every</option>
+                </select>
+            </li>
+            <li class="align repeater repeater-2">
+                <select class="form-control" id="frequency">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                </select>
+            </li>
+            <li class="align repeater repeater repeater-2">
+                <select class="form-control " id="unit">
+                    <option value="1" title="Minutes">minute(s)</option>
+                    <option value="2" title="Hours">hour(s)</option>
+                    <option value="3" title="Dails">day(s)</option>
+                    <option value="4" title="Weeks">week(s)</option>
+                </select>
+            </li>             
+         </ol>
+     </div>
+    
+    <div class="repeater repeater-1">
+       <ol class="align">
+           <li class="align"><span class="help-block" style="width:80px;">Start on</span></li>
+           <li class="align"><input type="text" class="form-control date-picker" id="datepicker" placeholder="Schedule Date"></li>
+           <li class="align"><span class="help-block">at</span></li>
+            <li class="align">
+            <select id="time-hr" name="hour" class="form-control">
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3">03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+                <option value="6">06</option>
+                <option value="7">07</option>
+                <option value="8">08</option>
+                <option value="9">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+            </li>
+            <li class="align"><span class="help-block">:</span></li>
+            <li class="align">
+            <select id="time-min" name="minute" class="form-control">
+                <option value="0">00</option>
+                <option value="5">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+            </select>
+            </li>
+            <li class="align">
+            <select id="ampm" class="form-control">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+            </li>           
+        </ol>        
+    </div>   
+        
+    
+    <div class="repeater repeater-2">
+        <ol class="align">
+           <li class="align"><span class="help-block" style="width:80px;">Starting on</span></li>
+           <li class="align"><input type="text" class="form-control date-picker" id="datepicker-from" placeholder="Start Date"></li>
+           <li class="align"><span class="help-block">ending</span></li>
+           <li class="align"><input type="text" class="form-control date-picker" id="datepicker-to" placeholder="End Date"></li>
+        </ol>   
+    </div>
+    
+    <br/>   
+    <div class="repeater unit-time unit-2">
+    
+        <ol class="align">
+           <li class="align"><span class="help-block" style="width:80px;">At</span></li>
+            <li class="align">
+                <select id="time-hr-from" name="hour-dw" class="form-control">
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3">03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+                <option value="6">06</option>
+                <option value="7">07</option>
+                <option value="8">08</option>
+                <option value="9">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+        </li>
+           <li class="align"><span class="help-block">:</span></li>
+        <li class="align">
+            <select id="time-min-from" name="minute-dw" class="form-control">
+                <option value="0">00</option>
+                <option value="5">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+            </select>
+        </li>
+        <li class="align">
+            <select id="ampm-dw" class="form-control">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+        </li>  
+        </ol>
+    </div>
+    <div class="repeater repeater-2 unit-time unit-1">
+        <ol class="align">
+           <li class="align"><span class="help-block" style="width:80px;">From</span></li>
+            <li class="align">
+                <select id="time-hr-from" name="hour-from" class="form-control">
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3">03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+                <option value="6">06</option>
+                <option value="7">07</option>
+                <option value="8">08</option>
+                <option value="9">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+        </li>
+           <li class="align"><span class="help-block">:</span></li>
+        <li class="align">
+            <select id="time-min-from" name="minute-from" class="form-control">
+                <option value="0">00</option>
+                <option value="5">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+            </select>
+        </li>
+        <li class="align">
+            <select id="ampm-from" class="form-control">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+        </li>  
+        <li class="align" ><span class="help-block">until</span></li>
+            <li class="align">
+                <select id="time-hr-until" name="hour-until" class="form-control">
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3">03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+                <option value="6">06</option>
+                <option value="7">07</option>
+                <option value="8">08</option>
+                <option value="9">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+        </li>
+        <li class="align repeater-2"><span class="help-block">:</span></li>
+        <li class="align repeater-2">
+            <select id="time-min-until" name="minute-until" class="form-control">
+                <option value="0">00</option>
+                <option value="5">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+            </select>
+        </li>
+        <li class="align repeater-2">
+            <select id="ampm-until" class="form-control">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+        </li>           
+        </ol>        
+    </div>
+    
+    <br/>
+    
+    <div class="repeater repeater-2 unit-time unit-1">
+        <ol class="align">
+        <li class="align"><span class="help-block" style="width:110px;">Repeat on days</span></li>
+        <li class="align"><span class="help-block" title="Sunday" style="padding-right:7px;" ><input id="dow0" name="SU" checked="checked" title="Sunday" type="checkbox">&nbsp;Sun&nbsp;</span></li>
+        <li class="align"><span class="help-block" title="Monday" style="padding-right:7px;" ><input id="dow1" name="MO" checked="checked" title="Monday" type="checkbox">&nbsp;Mon</span></li>
+        <li class="align"><span class="help-block" title="Tuesday" style="padding-right:7px;"><input id="dow2" name="TU" checked="checked" title="Tuesday" type="checkbox">&nbsp;Tue</span></li>
+        <li class="align"><span class="help-block" title="Wednesday" style="padding-right:7px;"><input id="dow3" name="WE" checked="checked" title="Wednesday" type="checkbox">&nbsp;Wed</span></li>
+        <li class="align"><span class="help-block" title="Thursday" style="padding-right:7px;"><input id="dow4" name="TH" checked="checked" title="Thursday" type="checkbox">&nbsp;Thu</span></li>
+        <li class="align"><span class="help-block" title="Friday" style="padding-right:7px;"><input id="dow5" name="FR" checked="checked" title="Friday" type="checkbox">&nbsp;Fri</span></li>
+        <li class="align"><span class="help-block" title="Saturday" style="padding-right:7px;"><input id="dow6" name="SA" checked="checked" title="Saturday" type="checkbox">&nbsp;Sat</span></li>
+        </ol>
+    </div>
+ 
+    <div>    	
+         <ol class="align">
+            <li class="align">
+                <button type="button" class="btn btn-success" style="background-color:#4abdac; color:#dfdce3;" ng-click="schedule();">SCHEDULE</button>&nbsp;
+            </li>
+            <li class="align">
+                <button type="button" class="btn btn-danger" onclick="reset();" ng-click="clearAll();">RESET</button>
+            </li>
+        </ol>
+    </div>
+    <h6><span id="renew-msg" class="alert alert-warning" style="visibility: hidden;">I'm aware that {{selectionCount}} listing(s) will be scheduled for renewal, costing <b>{{selectionCost | currency:"USD$"}}</b> renewal fee charged by Etsy.</span></h6>          
+    <div style="visibility: hidden;" >
+        <span class="label label-info" id="server-date"></span>
+        <span class="label label-info" id="server-time"></span>
+        <span class="label label-info" id="local-dateTime"></span>
+        <span class="label label-info" id="target-dateTime"></span>
+    </div>
+    
+    </div>
+</div>           
+
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+        setTimeout(function(){ setSelectedTimeZone(); }, 300);              
+    });
+    
+    $(function(){
+        var defTimeZoneVal=readCookie('sar-tz');
+        document.getElementById('zone-list').value = (!defTimeZoneVal)?new Date().getTimezoneOffset()/60*(-1):defTimeZoneVal;
+        //$("#time-hr").val(new Date().getHours()%12);                
+        //$("#time-min").val(5*parseInt(new Date().getMinutes()/5));
+        
+    });
+    
+    $(function() {
+	$( ".date-picker" ).datepicker({dateFormat: 'yy/mm/dd',minDate: 0});
+    });
+        
+    var setTimeZone = function(){
+            var el = document.getElementById("zone-list");
+            var tz = el.options[el.selectedIndex].value;
+            createCookie('sar-tz',tz,1000);
+            //time zone
+            var dt = document.getElementById('datepicker').value;
+            var tm = setTime();//document.getElementById('timepicker').value;
+            var tzDate = new Date(Date.parse(dt +' '+tm,"yy/mm/dd H:i:s"));
+            
+            //utc
+            tz = parseInt(tz) + daylightSavingTimeOffset(tz); 
+            var utc = tzDate.getTime() + (parseInt(tz) * 60 * 60000 *(-1));
+
+            //local date
+            dt = new Date();
+            var localOffset= dt.getTimezoneOffset() * 60000 * (-1);  
+            var localDate = new Date(utc + localOffset);
+            
+            //server date - America/Denver UTC-7h
+            var stz = parseInt(-7) + daylightSavingTimeOffset(-7); 
+            var bhOffset= (stz *60) * 60000;  
+            //var bhOffset= (7 *60) * 60000 * (-1);  
+            var bhDate = new Date(utc + bhOffset);  
+            
+            document.getElementById('server-date').innerHTML=bhDate.getFullYear()+'/'+(bhDate.getMonth()+1)+'/'+bhDate.getDate();
+            document.getElementById('server-time').innerHTML=bhDate.getHours()+':'+(bhDate.getMinutes()<10?'0':'') +bhDate.getMinutes()+':'+(bhDate.getSeconds()<10?'0':'')+bhDate.getSeconds();
+            document.getElementById('local-dateTime').innerHTML=localDate.toDateString()+' '+localDate.getHours()+':'+(localDate.getMinutes()<10?'0':'') +localDate.getMinutes()+':'+(localDate.getSeconds()<10?'0':'')+localDate.getSeconds();
+            document.getElementById('target-dateTime').innerHTML=tzDate.toDateString()+' '+tzDate.getHours()+':'+(tzDate.getMinutes()<10?'0':'') +tzDate.getMinutes()+':'+(tzDate.getSeconds()<10?'0':'')+tzDate.getSeconds();//+' (ETC/GMT '+(tz>=0?'\+':'')+tz.toString()+')';
+     };               
+        
+    
+    $("#repeat").change(function () {
+          //turn off all
+          var repeaters = document.getElementsByClassName('repeater');
+          for (var i = 0; i < repeaters.length; i++) {
+              repeaters[i].style.display = 'none';
+          }
+          
+          var repeaterClass=  $("#repeat").val() === '2' ? 'repeater-2' : 'repeater-1';          
+          repeaters = document.getElementsByClassName(repeaterClass);
+          for (var i = 0; i < repeaters.length; i++) {
+              repeaters[i].style.display = 'inline-block';
+          }        
+    });
+    
+    $("#repeat").val("1").change();
+    
+    $("#unit").change(function () {
+        if($("#repeat").val() === '2'){
+          //turn off all
+          var repeaters = document.getElementsByClassName('unit-time');
+          for (var i = 0; i < repeaters.length; i++) {
+              repeaters[i].style.display = 'none';
+          }
+          var repeaterClass=  $("#unit").val() > 2 ? 'unit-2' : 'unit-1'; 
+          repeaters = document.getElementsByClassName(repeaterClass);
+          for (var i = 0; i < repeaters.length; i++) {
+              repeaters[i].style.display = 'inline-block';
+          }        
+      }
+    });
+    
+    $("#unit").val("1").change();
+    
+    $("#schedule-items").change(function () {
+          repeaters = document.getElementsByClassName('selection-pnl');
+          for (var i = 0; i < repeaters.length; i++) {
+              repeaters[i].style.display = $("#schedule-items").val() === 'S' ?'block':'none';
+          }  
+          if($("#schedule-items").val() === 'S'){$("#schedule-times").hide();}else{$("#schedule-times").show();}
+    });
+    
+    $("#schedule-items").val("S").change();
+    
+    var setTime = function () {
+        var hr = document.getElementById('time-hr').value;
+        var min = document.getElementById('time-min').value;
+        var ampm = document.getElementById('ampm').value;
+        hr = ampm ==='PM'?(hr % 12)+12:hr%12;
+        return hr+':'+min+':00';
+        //$("#currTime").html(hr+':'+min+':00');//new Date(0, 0, 0, hr, min, 0).toTimeString());
+    };
+      
+    function createCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+    function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)===' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+    function eraseCookie(name) {
+        createCookie(name,"",-1);
+    }
+    
+    var setSelectedTimeZone = function () {        
+          var el = document.getElementById("zone-list");
+          var tz = el.options[el.selectedIndex].value;
+          createCookie('sar-tz',tz,1000);
+
+          var selectedDateTime = calcSelectedZoneDateTime();
+          var myDt=selectedDateTime.getFullYear() + '/' + (selectedDateTime.getMonth() + 1) + '/' + selectedDateTime.getDate();
+          $("#datepicker").datepicker('setDate', myDt);
+          document.getElementById("time-hr").value = parseInt(selectedDateTime.getHours()) > 0 && parseInt(selectedDateTime.getHours())!=12 ? (parseInt(selectedDateTime.getHours()) % 12) : 12;
+          document.getElementById("time-min").value = 5 * parseInt(selectedDateTime.getMinutes() / 5);
+          document.getElementById("ampm").value = parseInt(selectedDateTime.getHours()) >= 12 ? 'PM' : 'AM';
+      };
+
+    var calcSelectedZoneDateTime = function () {
+          //selected timezone
+          var el = document.getElementById("zone-list");
+          var selOffset = el.options[el.selectedIndex].value;
+          selOffset = parseInt(selOffset) + daylightSavingTimeOffset(selOffset);         
+          
+          //local date/time
+          var dt = new Date();
+          var localDate = new Date(Date.parse(dt, "yy/mm/dd H:i:s"));
+          var localOffset = new Date().getTimezoneOffset() / 60 * (-1);        
+
+          //utc
+          var utc = localDate.getTime() + (parseInt(localOffset) * 60 * 60000 * (-1));
+          utcDate = new Date(utc);
+
+          //calc sel date/time
+          var selTimeZone = utcDate.getTime() + (parseInt(selOffset) * 60 * 60000 * (1));
+          var selDateTime = new Date(selTimeZone)
+          return selDateTime;
+      };
+
+    var daylightSavingTimeOffset = function (offset) {
+
+          var dt = new Date();
+          var yy = parseInt(dt.getFullYear());
+
+          if (offset < 0) {
+              //usa + canada
+              var stDays = { '2016': 13, '2017': 12, '2018': 11, '2019': 10, '2020': 13, '2021': 14, '2022': 13, '2023': 12, '2024': 10, '2025': 9, '2026': 8, '2027': 14, '2028': 12, '2029': 11, '2030': 10, '2031': 9, '2032': 14 };
+              var endDays = { '2016': 6, '2017': 5, '2018': 4, '2019': 3, '2020': 1, '2021': 7, '2022': 6, '2023': 5, '2024': 3, '2025': 2, '2026': 1, '2027': 7, '2028': 5, '2029': 4, '2030': 3, '2031': 2, '2032': 7 };
+              var stDay = stDays[yy.toString()];
+              var endDay = endDays[yy.toString()];
+
+              var stDt = new Date(yy, 2, stDay, 0, 0, 0);
+              var endDt = new Date(yy, 10, endDay, 0, 0, 0);
+              return (stDt <= dt && endDt >= dt) ? 1 : 0;
+          } else if (offset < 3) {
+              //europe
+              var stDay = 31 - parseInt((((5 * yy) / 4) + 4) % 7);
+              var endDay = 31 - parseInt((((5 * yy) / 4) + 1) % 7);
+              var stDt = new Date(yy, 2, stDay, 0, 0, 0);
+              var endDt = new Date(yy, 9, endDay, 0, 0, 0);
+              return (stDt <= dt && endDt >= dt) ? 1 : 0;
+          }
+          else {
+              //everything else
+              return 0;
+          }
+      };
+
+    var getScheduledTime = function () {
+          var hr = document.getElementById('time-hr').value;
+          var min = document.getElementById('time-min').value;
+          var ampm = document.getElementById('ampm').value;
+          hr = ampm === 'PM' ? (hr % 12) + 12 : hr % 12;
+          var dt = new Date(document.getElementById('datepicker').value + ' ' + hr + ':' + min);
+          return dt;
+      }; 
+      
+      var validateSchedule = function () {
+    	  var scheduleDateTime = getScheduledTime();
+          var timeZoneDatetime = calcSelectedZoneDateTime();      
+          return (scheduleDateTime > timeZoneDatetime);         
+      };   
+     
+      var getRecurrence  = function(){
+        var rec ='"recurrence":[{"repeat":"'+ document.getElementById('repeat').value+'"\n\
+                , "frequency":"'+ document.getElementById('frequency').value+'"\n\
+                , "unit":"'+ document.getElementById('unit').value+'"\n\
+                , "times":"'+ document.getElementById('times').value+'"}]';
+        return rec;        
+      };    
+    
+    reset=function(){
+        $("#repeat").val("1").change();
+    };
+</script>
+   

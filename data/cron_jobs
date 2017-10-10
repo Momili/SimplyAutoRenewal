@@ -1,0 +1,2 @@
+command:
+php54s /home2/blendinc/public_html/etsy/models/schedule_renewals.php

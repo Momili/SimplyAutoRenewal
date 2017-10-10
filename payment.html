@@ -1,0 +1,79 @@
+<div class="panel panel-default" ng-controller="paymentsController" style="padding:10px;"> 
+    <div class="span4" style="padding:20px;"> 
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                       
+        <img src="{{user_details[0].google_picture_link}}" style="margin-left: 30px; margin-right: 30px;" class='img-circle' alt='' height='55' width='55'>
+        
+        <h4>{{user_details[0].google_name}}</h4>
+        
+            </td>
+            <td>
+                <ol class="align">
+                <li class="align">
+                    <span class="help-block">Your Simply Auto Renewal service expires on&nbsp;<b>{{user_details[0].expiry_date.substring(0,10)|date:'fullDate' }}</b></span>
+                </li>
+                </ol>
+                </br>
+    <ol class="align">
+        <li class="align">
+            <span class="help-block">Extend your Simply Auto Renewal service by </span>
+        </li>
+        <li class="align">
+            <select id="by-month" class="form-control" ng-model="myMonth" ng-options="month.text for month in months" ng-change="calcAmount()" />
+        </li>
+    </ol>    
+    <ol class="align">
+        <li class="align">
+            <span class="help-block" align="left">From <b>{{ fromDate|date:fulldate }}</b> until </span>
+        </li> 
+        <li class="align">
+            <span class="help-block" id="to-date"><b>{{toDate |date:fulldate}}</b>, total cost: </span>
+        </li>  
+        <li class="align">
+            <b><span id="extention-amount" class="help-block">$4.00 USD</span></b>
+        </li>  
+        <li class="align">
+        <!--<img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-left:50px;">-->
+        <form action='{{ actionUrl  }}' METHOD='POST'>
+            <input type='image' name='submit' src='images/btn_xpressCheckout.gif' border='0' align='left' style='margin-left:50px;' alt='Check out with PayPal'/>
+        </form>
+        <!-- models/expresscheckout.php <button id="make-payment" class="btn btn-large btn-success" type="button" style="margin-left:25px;" ng-click="expressCheckout($element.action)">Make a Payment</button> -->
+        </li>
+           </ol>                
+            </td>
+        </tr>
+        </tbody>
+    </table>                
+    
+</div>    
+    <hr class="grey"/>       
+    <h4 align="center"><span>PAYMENT HISTORY</span></h4>
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <thead>
+            <tr>
+                <th class="col-xs-2">Description</th>
+                <th class="col-xs-2">Amount Paid</th>
+                <th class="col-xs-3">Starting Date</th>
+                <th class="col-xs-3">Ending Date</th>
+                <th class="col-xs-3">Payment Date</th>
+            </tr>
+	</thead>
+    </table>
+    
+    <div style="overflow-y:auto; height:300px; width:100%; ">
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <tbody>
+            <tr ng-repeat = "payment in payments" >
+                <td class="col-xs-2">{{ payment.description }}</td>
+                <td class="col-xs-2">{{ payment.amount | currency:"$": 2}} USD</td>
+                <td class="col-xs-3">{{ payment.start_date.replace(' ','T') | date:'medium' }}</td>
+                <td class="col-xs-3">{{ payment.end_date.replace(' ','T') | date:'medium' }}</td>
+                <td class="col-xs-3">{{ payment.created_date.replace(' ','T') | date:'medium' }}</td>
+            </tr>
+        </tbody>
+    </table>				
+    </div>
+</div>

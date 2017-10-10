@@ -1,0 +1,174 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+    <title>SIMPLY AUTO RENEWAL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" >
+    <link rel="stylesheet" href="css/jquery.timepicker.min.css">              
+    <link rel="stylesheet" href="css/font-awesome.css" />   
+   <style>
+     
+    .align {
+        display:inline-block;
+        vertical-align:top; 
+    }   
+    .repeater {
+        display: none;
+    } 
+        
+    .navbar-default {
+      background-color: #ffffff;
+      border-color: #ffffff;
+    }
+    .navbar-default .navbar-brand {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-brand:hover,
+    .navbar-default .navbar-brand:focus {
+      color: #F4A71B;
+    }
+    .navbar-default .navbar-text {
+      color: #66B9BF;      
+    }
+    .navbar-default .navbar-nav > li > a {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-nav > li > a:hover,
+    .navbar-default .navbar-nav > li > a:focus {
+      color: #F4A71B;
+    }
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+      color: #F4A71B;
+      background-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle:hover,
+    .navbar-default .navbar-toggle:focus {
+      background-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle .icon-bar {
+      background-color: #66B9BF;
+    }
+    .navbar-default .navbar-collapse,
+    .navbar-default .navbar-form {
+      border-color: #66B9BF;
+    }
+    .navbar-default .navbar-link {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-link:hover {
+      color: #F4A71B;
+    }
+    .nav-title ,th{
+        color:#F4A71B;
+        font-weight: normal;
+    }
+    h4{
+       color: #66B9BF; 
+    }
+    a[class=listing-title], a[class=listing-title]:hover{
+    	color:#F4A71B;
+    	text-decoration:none;
+    	font-weight: bold;
+    	cursor: pointer;
+    }    
+    
+    
+    li{
+    	font-weight: bold;
+    }   
+    .content{
+    	text-align:center;
+    	padding:100px;
+    	color: #707a7a;
+    	background-color:#fff;/*#faf3eb; */
+    }
+    .span12{
+    	text-align:left;
+    }
+    .etsy-tm{
+            font-size:  smaller;
+            font-style:  italic;
+            color:#9d9d9d; 
+            width:700px; 
+            margin:auto;
+            padding:50px;
+    }
+    .img-help{
+            border-left:  1px solid silver;
+            border-top:  1px solid silver;
+            border-radius: 20px;
+            box-shadow: 4px 4px 4px #888888;
+            margin: auto;
+            height: 100%; 
+            width: 100%; 
+            object-fit: contain;
+     } 
+     .txt-help{
+            border:1px solid #888888;
+            border-radius: 10px;
+            margin-top:5px;
+            padding: 10px 20px 10px 20px;
+     		background-color:#f2f2f2;
+     		text-align:left;            
+     }        
+     .title-help{
+     	font-weight: bold;
+     	padding: 5px 5px 5px 5px;
+     	color:#fff;
+     	background-color:#66B9BF;
+     	text-align:left;
+     } 
+     .service-item{
+            margin:auto;
+            margin-bottom: 100px;
+            width:80%;
+     }
+        
+    </style>
+         
+    </head>
+    <body>
+        <div class="container" ng-controller='mainController'>
+            <nav class="navbar navbar-default navbar-custom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>                        
+                        </button> 
+               			<span class="navbar-brand"><img src="images/help/sar-logo.png" alt="SAR"></span>
+                    </div>
+                    
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#/">HOME</a></li>
+                            <li><a href="#features">HELP</a></li>
+                            <li><a href="#aboutus">ABOUT</a></li>                                                        
+                            <li><a href="#signin">SIGN IN</a></li>
+                            <li><a href="mailto:simplyautorenewal@gmail.com">CONTACT US</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav> 
+            <!-- angular templating -->
+            <!-- this is where content will be injected -->		
+            <div class="container" ng-view></div>
+        </div>        
+    </body>
+    <script type="text/javascript" src= "js/jquery.min.js"></script>
+    <script type="text/javascript" src= "js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src= "js/bootstrap.min.js" ></script> 
+    <script type="text/javascript" src= "js/angular.min.js" ></script>     
+    
+    <script type="text/javascript" src= "js/angular-route.js"></script>
+    <script type="text/javascript" src= "js/index2.js"></script>	    
+    
+</html>

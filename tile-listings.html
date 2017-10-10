@@ -1,0 +1,169 @@
+<style>
+    html {
+    height: 100%;
+    background: #e3e3e0;
+}
+a {
+    text-decoration: none;
+}
+:focus, :active {
+    outline: 0;
+}
+*{ 
+    -moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box; 
+    box-sizing: border-box;
+}
+
+#accordion .ui-accordion-header {
+    background-color: #ccc;
+    margin: 0px;
+}
+    #accordion .ui-accordion-header a {
+        color: #fff;
+        line-height: 42px;
+        display: block;
+        font-size: 12pt;
+        width: 100%;
+        text-indent: 10px;
+    }
+    #accordion .ui-accordion-header:first-of-type {
+        background-color: #fa9300;
+        background-image: -moz-linear-gradient(top,  #fa9300 0%, #dc621e 100%); /* FF3.6+ */
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fa9300), color-stop(100%,#dc621e)); /* Chrome,Safari4+ */
+        background-image: -webkit-linear-gradient(top,  #fa9300 0%,#dc621e 100%); /* Chrome10+,Safari5.1+ */
+        background-image: -o-linear-gradient(top,  #fa9300 0%,#dc621e 100%); /* Opera 11.10+ */
+        background-image: -ms-linear-gradient(top,  #fa9300 0%,#dc621e 100%); /* IE10+ */
+        background-image: linear-gradient(to bottom,  #fa9300 0%,#dc621e 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fa9300', endColorstr='#dc621e',GradientType=0 ); /* IE6-9 */
+    }
+    #accordion .ui-accordion-header:nth-of-type(2) {
+    background-color: #389abe;
+    background-image: -moz-linear-gradient(top,  #389abe 0%, #2a7b99 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#389abe), color-stop(100%,#2a7b99)); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top,  #389abe 0%,#2a7b99 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top,  #389abe 0%,#2a7b99 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top,  #389abe 0%,#2a7b99 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom,  #389abe 0%,#2a7b99 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#389abe', endColorstr='#2a7b99',GradientType=0 ); /* IE6-9 */
+    }
+    #accordion .ui-accordion-header:nth-of-type(3) {
+    background-color: #a8b700;
+    background-image: -moz-linear-gradient(top,  #a8b700 0%, #82922a 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a8b700), color-stop(100%,#82922a)); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top,  #a8b700 0%,#82922a 100%); 
+    background-image: -o-linear-gradient(top,  #a8b700 0%,#82922a 100%);
+    background-image: -ms-linear-gradient(top,  #a8b700 0%,#82922a 100%);
+    background-image: linear-gradient(to bottom,  #a8b700 0%,#82922a 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a8b700', endColorstr='#82922a',GradientType=0 ); /* IE6-9 */
+}
+
+</style>
+ 
+<div id="accordion" ng-controller="tileListingsController">
+  <h3>1. select your renewals</h3>
+  <div>
+    <p>
+        <div style="height:auto; padding:2px; margin:10px;" >	   
+            <div class="input-group"><input type="text" class="form-control" id="listingFilter" ng-model="myListingsFilter" placeholder="filter by title"></div>	
+        </div>
+        <table class="table table-hover table-condensed table-responsive table-fixed">
+            <thead>
+                <tr>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+		<th class="col-xs-8">Item</th>
+		<th class="col-xs-4">Last listed</th>
+                </tr>
+            </thead>
+	</table>
+	<div style="overflow-y:auto; height:400px;witdht:100">
+            <table class="table table-hover table-condensed table-responsive table-fixed">
+                <tbody>
+                    <tr ng-repeat = "listing in myListings | filter: myListingsFilter" ng-class="(listing.selected) ? 'warning' : ''">
+                    <td class="col-xs-1"><input type="checkbox" ng-model="listing.selected" /></td>
+                    <td class="col-xs-1" ng-click="listing.selected=!listing.selected"><img class="img-rounded" src='{{ listing.ImageUrl }}' height='50' width='50'></td>
+                    <td class="col-xs-8" ng-click="listing.selected=!listing.selected">{{ listing.Title }}</td>
+                    <td class="col-xs-4" ng-click="listing.selected=!listing.selected">{{ listing.LastUpdatedDate }}</td>
+                    </tr>
+                </tbody>
+            </table>	
+        </div>
+    </p>
+  </div>
+  <h3>2. revise your selections (optional)</h3>
+  <div>
+    <p>
+      <div style="padding:2px; margin:10px; " >	   
+          <img ng-repeat="listing in myListings | filter:listing.selected!=false" ng-click="removeSelected(this);" class="img-rounded" src='{{ listing.ImageUrl }}' height='75' width='75'/>		
+     </div>
+   </p>
+  </div>
+  <h3>3. schedule renewals</h3>
+  <div>
+    <p>
+      <form class="form-horizontal" role="form">
+	   <!--<div class="panel panel-default" >-->
+        <div style='width:50%; padding:30px' class="form-group">
+            <div class="input-group col-xs-8">Target time zone:
+            <select class="form-control" name="fromzone">
+            <option value="Etc/GMT">Etc/GMT</option>
+            <option value="Etc/GMT+0">Etc/GMT+0</option>
+            <option value="Etc/GMT+1">Etc/GMT+1</option>
+            <option value="Etc/GMT+10">Etc/GMT+10</option>
+            <option value="Etc/GMT+11">Etc/GMT+11</option>
+            <option value="Etc/GMT+12">Etc/GMT+12</option>
+            <option value="Etc/GMT+2">Etc/GMT+2</option>
+            <option value="Etc/GMT+3">Etc/GMT+3</option>
+            <option value="Etc/GMT+4">Etc/GMT+4</option>
+            <option value="Etc/GMT+5">Etc/GMT+5</option>
+            <option value="Etc/GMT+6">Etc/GMT+6</option>
+            <option value="Etc/GMT+7">Etc/GMT+7</option>
+            <option value="Etc/GMT+8">Etc/GMT+8</option>
+            <option value="Etc/GMT+9">Etc/GMT+9</option>
+            <option value="Etc/GMT-0">Etc/GMT-0</option>
+            <option value="Etc/GMT-1">Etc/GMT-1</option>
+            <option value="Etc/GMT-10">Etc/GMT-10</option>
+            <option value="Etc/GMT-11">Etc/GMT-11</option>
+            <option value="Etc/GMT-12">Etc/GMT-12</option>
+            <option value="Etc/GMT-13">Etc/GMT-13</option>
+            <option value="Etc/GMT-14">Etc/GMT-14</option>
+            <option value="Etc/GMT-2">Etc/GMT-2</option>
+            <option value="Etc/GMT-3">Etc/GMT-3</option>
+            <option value="Etc/GMT-4">Etc/GMT-4</option>
+            <option value="Etc/GMT-5">Etc/GMT-5</option>
+            <option value="Etc/GMT-6">Etc/GMT-6</option>
+            <option value="Etc/GMT-7">Etc/GMT-7</option>
+            <option value="Etc/GMT-8">Etc/GMT-8</option>
+            <option value="Etc/GMT-9">Etc/GMT-9</option>
+            <option value="Etc/GMT0">Etc/GMT0</option>
+            </select>
+            </div>
+
+            <div class="input-group col-xs-8">Schedule date: <input type="text" class="form-control " id="datepicker" ng-model="myDate" placeholder="Schedule Date"></div>
+            <div class="input-group col-xs-8">Schedule time: <input type="text" class="form-control " id="timepicker" ng-model="myTime" placeholder="Schedule Time"></div>  
+                <p style='padding:15px;'>
+                    <button type="button" class="btn btn-primary" ng-click="schedule();">Schedule</button>&nbsp;<!--<button type="button" class="btn btn-success" ng-click="reset()">Clear selection</button>-->
+                </p>
+        <!--</div>-->
+	   </div>
+      </form>
+    </p>  
+  </div>
+</div>
+
+<script type="text/javascript">
+    
+    $(function() {
+        $( "#accordion" ).accordion();
+    });
+    $(function() {
+	   $( "#datepicker" ).datepicker({dateFormat: 'yy/mm/dd'});
+    });
+    $(function() {
+        $( "#timepicker" ).timepicker({ 'timeFormat': 'H:i:s' ,step:15});
+    });       
+    
+</script>
+
+ 

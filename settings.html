@@ -1,0 +1,62 @@
+<div class="panel panel-default" ng-controller="settingsController"> 
+    <div class="span4" style="padding:20px;">        
+        <img src="{{user_details[0].google_picture_link}}" style="margin-left: 30px; margin-right: 30px;" class='img-circle' alt='' height='55' width='55'>
+        <span class="alert alert-success">Your Simply Auto Renewal service expires on&nbsp;<b>{{user_details[0].expiry_date.substring(0,10)|date:'fullDate' }}</b></span>
+        
+        <a href="#payment" style="margin-right:10px;">
+            <button id="extend-service" class="btn btn-large btn-success" type="button" >EXTEND SERVICE</button>
+        </a>
+        
+        <h4>{{user_details[0].google_name}}</h4>        
+        <hr class="grey"/>
+        <p>
+        <a class="login" style="float:right; margin-right:10px;" href="etsy_oauth_request.php">
+            <button id="authorize-me" class="btn btn-large btn-danger" type="button" >ADD ANOTHER SHOP</button>
+        </a>   
+        </p>
+    </div>
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <thead>
+            <tr>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-4">Shop Name</th>
+                <th class="col-xs-8">Shop Title</th>
+            </tr>
+	</thead>
+    </table>
+    <div style="overflow-y:auto; height:400px; width:100%; ">
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <tbody>
+            <tr ng-repeat = "shop in etsy_shops" ng-class="(shop.is_default==1) ? 'warning' : ''">
+                <td><input type="checkbox" ng-model="shop.is_default===1" ng-click="select(shop)"/></td>
+                <td class="col-xs-1"><button type="button" class="btn btn-default" ng-click="select(shop)">Select</button></td>
+                <td class="col-xs-1"><button type="button" class="btn btn-default" ng-click="remove(shop)">Remove</button></td>
+                <td class="col-xs-1"><img  class='img-rounded' src='{{ shop.icon_url }}' alt='' width="75" height="75"></td>
+                <td class="col-xs-4">{{ shop.shop_name }}</td>
+                <td class="col-xs-8">{{ shop.title }}</td>
+            </tr>
+        </tbody>
+    </table>				
+    </div>
+</div>
+
+
+<script>
+ $('.url-banner').attr("style", "display: block !important");   
+ 
+ /*
+ $( "#dialog-payments" ).dialog({ autoOpen: false, modal: true ,minHeight: 400, minWidth:600,maxHeight: 400, maxWidth:600});
+    $( "#extend-service" ).click(function() {
+        $( "#dialog-payments" ).dialog( "open" );
+    });
+    
+ var calcAmount=function(){
+     var el = document.getElementById("by-month");
+     var months = el.options[el.selectedIndex].value;
+     document.getElementById('extention-amount').innerHTML="$"+(months*4).toLocaleString('en-US', { minimumFractionDigits: 2 })+" USD";
+ };   
+ */
+</script>	 

@@ -1,0 +1,266 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+    <title>SIMPLY AUTO RENEWAL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" >
+    <link rel="stylesheet" href="css/jquery.timepicker.min.css">              
+    <link rel="stylesheet" href="css/font-awesome.css" />   
+   <style>
+     
+    .align {
+        display:inline-block;
+        vertical-align:top; 
+    }   
+    .repeater {
+        display: none;
+    } 
+        
+    .navbar-default {
+      background-color: #ffffff;
+      border-color: #ffffff;
+    }
+    .navbar-default .navbar-brand {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-brand:hover,
+    .navbar-default .navbar-brand:focus {
+      color: #F4A71B;
+    }
+    .navbar-default .navbar-text {
+      color: #66B9BF;      
+    }
+    .navbar-default .navbar-nav > li > a {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-nav > li > a:hover,
+    .navbar-default .navbar-nav > li > a:focus {
+      color: #F4A71B;
+    }
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+      color: #F4A71B;
+      background-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle:hover,
+    .navbar-default .navbar-toggle:focus {
+      background-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle .icon-bar {
+      background-color: #66B9BF;
+    }
+    .navbar-default .navbar-collapse,
+    .navbar-default .navbar-form {
+      border-color: #66B9BF;
+    }
+    .navbar-default .navbar-link {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-link:hover {
+      color: #F4A71B;
+    }
+    .nav-title ,th{
+        color:#F4A71B;
+        font-weight: normal;
+    }
+   
+    
+    .navbar .nav,
+.navbar .nav > li {
+  float:none;
+  display:inline-block;
+  *display:inline; /* ie7 fix */
+  *zoom:1; /* hasLayout ie7 trigger */
+  vertical-align: top;
+}
+
+.navbar-inner {
+  text-align:center;
+}
+
+    h4{
+       color: #66B9BF; 
+    }
+    a[class=listing-title], a[class=listing-title]:hover{
+    	color:#F4A71B;
+    	text-decoration:none;
+    	font-weight: bold;
+    	cursor: pointer;
+    }    
+    
+    
+      
+    .content{
+    	text-align:center;
+    	padding:20px;
+    	color: #707a7a;
+    	background-color:#fff; /*#fff3e0; #faf3eb;*/ 
+    }
+    .span12{
+    	text-align:left;
+        padding:5px;
+    }
+    .etsy-tm{
+            font-size:  smaller;
+            font-style:  italic;
+            color:#9d9d9d; 
+            width:700px; 
+            margin:auto;
+            padding:50px;
+    }
+    .img-help{
+            border:1px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: 10px 10px 4px #e0e0eb;
+            margin: auto;
+            height: 100%; 
+            width: 100%; 
+            object-fit: contain;
+     } 
+     .txt-help{
+     		font-family: Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;/*Cervo-Thin,Helvetica,Arial,sans-serif;*/
+     		font-size: 16px;
+     		/*font: 15px arial, sans-serif;
+            border:1px solid #66B9BF;
+            border-radius: 5px;*/
+            border-radius: 5px;
+    		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    	    margin-top:5px;
+            padding: 10px 20px 10px 20px;
+     		background-color:#ffffff;/*#e0f2f1;*/
+     		text-align:left;            
+     }        
+     .title-help{
+     	font-weight: bold;
+     	padding: 5px 5px 5px 5px;
+     	color:#fff;
+     	background-color:#66B9BF;
+     	text-align:left;
+     } 
+     .service-item{
+            margin:auto;
+            margin-bottom: 100px;
+            width:90%;
+     }
+     
+     #main-container{
+     	border-top: 2px solid  #66B9BF;
+     	background-color:#fff;/*#faf3eb;*/ 
+     	padding-top:5px;
+     } 
+     
+    .em-help-main h1 {
+ 	border-bottom: 1px solid #d7d7d7;
+    	color: #7ecbb5;
+    	font-family: Cervo-Thin,Helvetica,Arial,sans-serif;
+    	font-size: 28px;
+    	font-weight: normal;
+    	line-height: 28px;
+    	padding: 5px;
+    	text-transform: uppercase;
+    } 	
+	
+	.menu-item{
+		font-weight: bold;
+	}
+	
+	.p-howto{
+		width: 80%;
+		height: auto;
+		background-color: #f2f2f2;
+		box-shadow: 10px 10px 5px #e0e0eb;
+		padding:14px;
+		border:1px solid #66B9BF;
+		border-radius: 5px;
+		font: 16px arial, sans-serif;
+		font-style: normal;
+		font-weight: 750;
+		margin:20px;
+	}
+	.a-howto{
+		color:#999999;/*#66B9BF;*/
+		text-decoration:none;
+	}
+	a.a-howto:hover{
+		color:#F4A71B;
+		text-decoration:none;
+		font-weight: bold;
+	}
+	.social{
+    	color:#F4A71B;
+        font-weight: obligue;
+        font: 24px arial, sans-serif;
+        font-weight: 850;
+    }
+        .logo{
+        color:#F4A71B;
+        font-weight: obligue;
+        font: 42px arial, sans-serif;
+        font-weight: 900;
+        }
+        .back-top{
+        float:right;
+        }
+        a.back-top{
+        text-decoration:none;
+        color:#fff;
+        font-weight: bold;        
+        }
+    </style>
+         
+    </head>
+    <body>
+        <a id="top"></a>
+        <div class="container" ng-controller='mainController'>
+            <nav class="navbar navbar-default navbar-custom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>                        
+                        </button> 
+               			<span class="navbar-brand"><img src="images/help/sar-logo.png" alt="SAR"></span>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="active menu-item"><a  href="#/">HOME</a></li>
+                            <li class="menu-item"><a href="#features">HELP</a></li>
+                            <li><a class="menu-item" href="#aboutus">ABOUT</a></li>                                                        
+                            <li><a class="menu-item" href="#signin">SIGN IN</a></li>
+                            <li><a class="menu-item" href="mailto:simplyautorenewal@gmail.com">CONTACT</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav> 
+           
+            <!-- angular templating -->
+            <!-- this is where content will be injected -->		
+            <div id="main-container" class="container" ng-view></div>
+        </div>        
+    </body>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js" ></script> 
+    <script type="text/javascript" src="js/angular.min.js" ></script>
+    <script type="text/javascript" src="js/angular-route.js"></script>
+    <script type="text/javascript" src="js/index2.js"></script>
+    
+    <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-83797530-1', 'auto');
+	  ga('require', 'linkid');
+	  ga('send', 'pageview');
+    </script>
+    
+</html>

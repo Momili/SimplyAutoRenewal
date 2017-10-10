@@ -1,0 +1,41 @@
+<div class="panel panel-default" ng-controller="contactController"> 	
+    <h5>
+        <p style="margin-left:50px;">
+        <i>
+        Hello {{user_details.google_name}},
+        </br>
+        </br>
+        Thanks for using </i><b>SIMPLY AUTO RENEWAL</b>.
+        </br>
+        <i>
+        Tell us what you think?</br>             
+        Your opinion matters to us.</br>        
+        </br>
+        Sincerely Hurley Mistrall.
+        </i>	     
+        </p>
+    </h5>
+    <hr class="grey"/>        
+    <div style="overflow-y:auto; width:100%; margin:20px;">   			
+        <table> 
+            <tr> 
+                <td valign="top"><span class="help-block" for="subject">Subject</span></td> 
+                <td valign="top"><input class="form-control" type="text" ng-model="subject" maxlength="100" size="100"></td> 
+            </tr>	
+            <tr> 
+                <td valign="top"><span class="help-block" for="comments">Comments&nbsp;</span></td> 
+                <td valign="top"><textarea class="form-control" ng-model="comments" maxlength="1000" cols="25" rows="6"></textarea></td> 
+            </tr> 
+        </table> 
+    </div>
+    <div>    	
+        <ol class="align">
+            <li class="align">
+                <button type="button" class="btn btn-default" ng-click="send();">SEND</button>&nbsp;
+            </li>
+            <li class="align">
+                <button type="button" class="btn btn-default" ng-click="reset();">CLEAR</button>
+            </li>
+        </ol>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="panel panel-default" ng-controller="completedController">
+    <div class="input-group" style="padding:15px; width:100%" >
+    	<img class="img-rounded" style="float:left; border:1px solid grey;" ng-src="{{shopImgUrl}}" alt="" height='65' width='65'>
+        <ol class="align" style="margin-top:10px;">        	
+            <li class="align"><span class="help-block" style="text-align: right;">Completed renewals for </span></li>
+            <li class="align"><select class="form-control" ng-model="myPeriod" ng-options="period.name for period in periods" ng-change="update()"/></li>
+            
+        </ol>
+    </div>
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+    	<thead>
+            <tr>
+                <th class="col-xs-1">Type</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-8">Title</th>
+                <th class="col-xs-4">Renewed Date/Time</th>
+            </tr>
+	</thead>
+    </table>
+    <img id="mySpinner" src="images/loading.gif" style='display:block; margin:auto;' ng-show="loading" />		    
+    <div style="overflow-y:auto; height:430px; width:100%;">
+        <table class="table table-hover table-condensed table-responsive table-fixed">
+            <tbody>
+	        <tr ng-repeat = "completed in myCompleted" >
+                    <td class="col-xs-1">{{ completed.RenewType==='RND'?'Random':'' }}</td>
+                    <td class="col-xs-1"><img class='img-rounded' src='{{ completed.ImageUrl }}' alt='' height='65' width='65'></td>                    
+                    <td class="col-xs-8">{{ completed.Title }}</td>
+                    <td class="col-xs-4">{{ completed.LocalDateTime.replace(' ','T') | date:'medium' }}</td>    
+		</tr>
+	    </tbody>
+	</table>				
+    </div>
+    <div class="input-group" style="padding:15px; margin:50px; width:100%">
+    <li class="align"><span class="alert alert-warning" style="text-align: right;">Total renewal fees cost charged by Etsy for the month of {{myPeriod.name}} : <b>${{etsyFee}}&nbsp;(USD)</b></span></li>
+    </div>        
+</div>
+	 	 

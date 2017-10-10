@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SIMPLY AUTO RENEWAL</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/jquery-ui.css" >
+        <link rel="stylesheet" href="css/jquery.timepicker.min.css">              
+        <link rel="stylesheet" href="css/font-awesome.css" />  
+        <script src="js/jquery.min.js"></script>
+        <script>
+           $(document).ready(function(){  
+                $("#authorize").load('models/authorize.php');
+            });        
+        </script>  
+        <style type ="text/css" >
+            .footer{ 
+                position: fixed;     
+                text-align: center;    
+                bottom: 0px; 
+                width: 100%;
+                font-style:italic;
+                font-size:  smaller;
+	            color:#9d9d9d; 
+            }  
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-default navbar-custom">
+                <div class="navbar-header">
+                    <h2>SIMPLY AUTO RENEWAL</h2>
+                </div>
+            </nav> 
+            <div class="panel panel-default"> 
+                <div >
+                    <div class="page-header" style="height:400px;text-align:center;">
+                        <h4>CONNECT YOUR SIMPLY AUTO RENEWAL ACCOUNT TO YOUR SHOP IN ETSY</h4>
+                        <br/>
+                        <p>To use this tool, you must connect your Etsy shop to your Simply Auto Renewal account.</p>
+                        <br/>
+                        <br/>
+                        <div id="authorize"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">The term 'Etsy' is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or certified by Etsy, Inc.</div>
+   </body>   
+</html>

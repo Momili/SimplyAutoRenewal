@@ -1,0 +1,43 @@
+<div class="panel panel-default" ng-controller="successController" style="padding:10px;"> 
+    <div class="span4" style="padding:20px; border:1px solid red;"> 
+	<table>
+		<tbody>
+			<tr>
+				<td>                       
+					<img src="{{user_details[0].google_picture_link}}" style="margin-left: 30px; margin-right: 30px;" class='img-circle' alt='' height='55' width='55'>
+					<h4>{{user_details[0].google_name}}</h4>
+				</td>
+			</tr>
+			<tr>
+				<td>                       
+					<h4>Confirmation</h4>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span class="help-block">Pay for {{ payment.description }}</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span class="help-block">Total amount: ${{ payment.payment_amount }}.00 USD</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span class="help-block">Service start date: {{ start_date |date:fulldate }}</span>
+					</td>
+			</tr>
+			<tr>
+				<td>
+					<span class="help-block">Service end date: {{ end_date |date:fulldate }}</span>
+				</td>
+			</tr>
+			<tr>
+				<td>            
+					<button id="make-payment" class="btn btn-large btn-success" type="button" style="margin-left:25px;" ng-click="pay()">PAY NOW</button> 
+					<button id="make-payment" class="btn btn-large btn-danger" type="button" style="margin-left:5px;" ng-click="cancel()">CANCEL</button> 
+				</td>
+			</tr>
+		</tbody>
+	</table>

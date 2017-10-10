@@ -1,0 +1,626 @@
+<html>
+<head>
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="stylesheet" href="css/font-awesome.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+
+.btn {    
+    border: 3px solid transparent;
+    border-radius: 2.5rem;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Avenir Next W01","Avenir Next","Avenir",helvetica,arial,sans-serif;
+    font-size: 1.1em;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0 auto;
+    padding: 0.4375em 1.5em 0.5em;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+/*
+.btn{
+	-moz-user-select: none;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+	color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.7em;
+    font-weight: 400;
+    line-height: 1.25;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+*/
+.btn-red {
+   background-color: #db3236; 
+   font-family:"Georgia";
+}
+.btn-green {
+   background-color: #9ccc65;;
+}
+.btn-blue {
+   background-color: #337ab7;
+}
+.btn-orange{
+   background-color: #d45413;
+}
+.btn-red:hover, btn-red:focus{
+	background-color:#ff1100;
+	color:#fff;
+}
+.btn-green:hover, btn-green:focus{
+	background-color:#649918;
+	color:#fff;
+}
+.btn-blue:hover, btn-blue:focus{
+	background-color:#0265d8;
+	color:#fff;
+}
+
+.rcorners1 {
+    border: 3px solid transparent;
+    border-radius: 1.5em;
+    background: #393939;
+	color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Avenir Next W01","Avenir Next","Avenir",helvetica,arial,sans-serif;
+    font-size: 1.0em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 20px;
+    width: 200px;
+}
+
+.summary {
+    border: 3px solid transparent;
+    border-radius: 0.7em;
+    background: #909090;
+	color: #fff;
+    display: inline-block;
+    font-family: "Avenir Next W01","Avenir Next","Avenir",helvetica,arial,sans-serif;
+    font-size: 1.5em;
+    font-weight: 300;
+    line-height: 1;
+    padding: 30px;
+	width:100%;
+}
+
+label, .help-block{
+	color: #5e5e5e;
+	font-weight: bold;
+	font-family: "Avenir Next W01","Avenir Next","Avenir",helvetica,arial,sans-serif;
+}
+
+.tbl{
+	/*border:1px solid #b8b8b8;*/
+	margin:10px;
+	padding: 0.4375em 1.5em 0.5em;
+	font-family: "Avenir Next W01","Avenir Next","Avenir",helvetica,arial,sans-serif;
+    font-size: 0.8em;
+    font-weight: 100;
+}
+
+.tbl-hidden{
+	display:none;
+}
+
+.planner-block {
+    background-color: rgba(192,192,192,0.5);
+    padding: 30px;
+    width: 550px;
+	border: 1px solid #transparent;
+    border-radius: 0.7em;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top:2.0em;	
+}
+
+
+.row::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+*::before, *::after {
+    box-sizing: border-box;
+}
+*, *::after, *::before {
+    box-sizing: inherit;
+}
+.row,  .rep-group{
+    margin-left: -15px;
+    margin-right: -15px;
+	margin-bottom:10px;
+	border: 0.1em solid transparent; 
+	border-radius: 0.25rem;
+	padding:0.4em;
+}
+.rep-group{
+	border: 0.1em solid #5e5e5e;
+display:none;	
+}
+label {
+    color: #333;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+label {
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    max-width: 100%;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+handleRenewType=function(ren){
+	//alert(ren==1);
+
+	if(ren==1){
+		$(".rep-2").removeClass('tbl-hidden');
+		$(".rep-1").addClass('tbl-hidden');
+		$(".rep-3").addClass('tbl-hidden');
+		$(".rep-4").addClass('tbl-hidden');
+		$(".rep-5").addClass('tbl-hidden');
+		$(".rep-6").addClass('tbl-hidden');
+	}
+	else if(ren==2){
+		$(".rep-2").addClass('tbl-hidden');
+		$(".rep-1").removeClass('tbl-hidden');
+		$(".rep-3").removeClass('tbl-hidden');
+		$(".rep-4").removeClass('tbl-hidden');
+		$(".rep-5").addClass('tbl-hidden');
+		$(".rep-6").removeClass('tbl-hidden');
+	}
+	else if(ren==3){
+		$(".rep-2").removeClass('tbl-hidden');
+		$(".rep-1").removeClass('tbl-hidden');
+		$(".rep-3").addClass('tbl-hidden');
+		$(".rep-4").addClass('tbl-hidden');
+		$(".rep-5").removeClass('tbl-hidden');
+		$(".rep-6").addClass('tbl-hidden');
+		
+
+	}
+};
+
+summaryMsg= function(){
+
+	var rep= $('#rep-type').val()==1?'once':'every';
+	//alert($('#rep-type').val());
+	var interval=$('#rep-type').val()==1?'':$('#interval  option:selected').text()+' '+$('#frequency  option:selected').text()+' ';
+	var startDate=$('#rep-type').val()==2?'':$('#datepicker').val()+' at '+$('#time-hr option:selected').text()+':'+$('#time-min option:selected').text()+' '+$('#ampm option:selected').text();
+	//alert(startDate);
+	
+	var summary='Summary: Schedule '+$('#schedule-times').val()+' '+$('#schedule-items option:selected').text()+' items for renewal, repeat '+rep+' '+interval+'start on '+startDate 
+	$('.summary').html(summary.toLowerCase());	
+};
+
+$( document ).ready(function() {
+	
+	
+	
+	$('.repeatance').change(function() {
+		handleRenewType($(this).val());
+	}); 
+	$('#rep-type').change(function() {
+		handleRenewType($(this).val());
+	});
+	$('#schedule-times').change(function() {
+		summaryMsg();		
+	});
+	$('#schedule-items').change(function() {
+		summaryMsg();		
+	});
+	$('#rep-type').change(function() {
+		summaryMsg();		
+	});
+	$('#interval').change(function() {
+		summaryMsg();		
+	});
+	$('#frequency').change(function() {
+		summaryMsg();		
+	});
+	$('#datepicker').change(function() {
+		summaryMsg();		
+	});
+	$('#time-hr').change(function() {
+		summaryMsg();		
+	});
+	$('#time-min').change(function() {
+		summaryMsg();		
+	});
+	$('#ampm').change(function() {
+		summaryMsg();		
+	});
+	//$('#renew-once').prop('checked', true);
+	handleRenewType(1);
+	summaryMsg();	
+});
+
+
+</script>
+
+</head>
+
+<body ><!--background="img/sac2.jpg">-->
+<div class="row">
+<a href="http://localhost/test/schedule2.html">
+  <div id="icon" style="background-image:url('favicon.png');width:32px;height:32px;"></div>
+  <div id="title">SimplyAutoRenewal</div>
+</a>
+<input type="text" placeholder="search by title">
+<input type="text" placeholder="search by title">
+<a class="btn btn-red">Login with Google</a>
+</div>
+<div class="planner-block">
+
+<div class="row">
+<label>Schedule</label>
+<select id="schedule-times" >
+<option value="1">1</option>`
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+</select>
+<select id="schedule-items">
+<option value="R">Random</option>
+<option value="O">Oldest</option>
+<option value="N">Newest</option>
+<option value="L">Lowest price</option>
+<option value="H">Highest price</option>
+<option value="S">These selected items</option>
+</select>
+<label>items for renewal</label>   
+</div>
+
+
+<div class="row">
+<label>Time zone</label>
+<select id="zone-list" class="" onchange="setSelectedTimeZone()">
+<option value="-8"><b>PACIFIC TIME</b> - British Columbia, California, Washington</option>
+<option value="-7">MOUNTAIN TIME - Colorado, Montana, Utah</option>
+<option value="-6">CENTRAL TIME - Illinois, Texas, Manitoba, Mexico</option>
+<option value="-5">EASTERN TIME - Boston, New York, Toronto, Montreal</option>
+<option value="-4">ATLANTIC TIME - New Brunswick, Nova Scotia, Bermuda</option>
+<option value="0">WESTERN EUROPEAN TIME - Portugal, Morocco</option>
+<option value="1">CENTRAL EUROPEAN TIME - France, Germany, Italy</option>
+<option value="2">EASTERN EUROPEAN TIME - Bulgaria, Finland, Lithuania</option>
+<option value="3">FURTHER-EASTERN EUROPEAN TIME - Belarus, Moscow</option>
+<option value="4">GULF STANDARD TIME - Oman, United Arab Emirates </option>
+<option value="8">CHINA STANDARD TIME - China, Macau, Taiwan </option>
+<option value="9">JAPAN STANDARD TIME - Japan Standard Time </option>
+<option value="10">AUSTRALIAN EASTERN STANDARD TIME - Australia </option>
+</select>
+</div>
+
+<div class="rep-group">
+<div class="row">
+<input id="renew-once" class="repeatance" name="renew-type" title="Repeat once" type="radio" value="1" checked="checked">
+<label for="renew-once" title="Ends never">Repeat once</label>
+</div>
+
+<div class="row">
+<input id="renew-dates" class="repeatance" name="renew-type" title="Repeat during specified period" type="radio" value="2" >
+<label for="renew-dates" title="Ends after a number of occurrences">Repeat during specified period</label>
+</div>
+
+<div class="row">
+<input id="renew-times" class="repeatance" name="renew-type" title="Repeat specified times" type="radio" value="3" >
+<label for="renew-times" title="Ends after a number of occurrences">Repeat number of times</label>
+</div>
+</div>
+
+<div class="row">
+<label for="rep-type" title="Repeat">Repeating options</label>
+<select id="rep-type">
+<option value="1" selected="selected">ONCE</option>`
+<option value="2">DURING SPECIFIED PERIOD</option>
+<option value="3">NUMBER OF TIMES</option>
+</select>
+</div>
+
+<div class="row rep-1">
+<label>Repeats every</label>
+<select id="interval" title="Repeat every 2 weeks">
+<option value="1" selected="selected">1</option>
+<option value="2" >2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5" >5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+</select>
+<select id="frequency" title="Repeats ">
+<option value="m" title="Minutely">minutes</option>
+<option value="h" title="Hourly" selected="selected">hours</option>
+<option value="d" title="Daily">days</option>
+<option value="w" title="Weekly">weeks</option>
+</select>
+</div>
+
+<div class="row rep-2">
+<label>Starts on</label>
+<input id="datepicker" placeholder="Schedule Date" type="text">
+<label>at</label>
+<select id="time-hr" name="hour">
+<option value="1">01</option>
+<option value="2">02</option>
+<option value="3">03</option>
+<option value="4">04</option>
+<option value="5">05</option>
+<option value="6">06</option>
+<option value="7">07</option>
+<option value="8">08</option>
+<option value="9">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+<label>:</label>
+<select id="time-min" name="minute">
+<option value="0">00</option>
+<option value="5">05</option>
+<option value="10">10</option>
+<option value="15">15</option>
+<option value="20">20</option>
+<option value="25">25</option>
+<option value="30">30</option>
+<option value="35">35</option>
+<option value="40">40</option>
+<option value="45">45</option>
+<option value="50">50</option>
+<option value="55">55</option>
+</select>
+<select id="ampm">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</div>
+
+<div class="row rep-3">
+<label>Starts on</label>
+<input id=":207.rstart" size="10" value="2017/03/01" aria-labelledby=":207.rstart-label" autocomplete="off">
+<label>ends on</label>
+<input id=":207.rstart" size="10" value="2017/03/31" aria-labelledby=":207.rstart-label" autocomplete="off">
+</div>
+
+<div class="row rep-4">
+<label>From</label>
+<select id="time-hr1" name="hour">
+<option value="1">01</option>
+<option value="2">02</option>
+<option value="3">03</option>
+<option value="4">04</option>
+<option value="5">05</option>
+<option value="6">06</option>
+<option value="7">07</option>
+<option value="8">08</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+
+<label>:</label>
+<select id="time-min1" name="minute">
+<option value="0">00</option>
+<option value="5">05</option>
+<option value="10">10</option>
+<option value="15">15</option>
+<option value="20">20</option>
+<option value="25">25</option>
+<option value="30">30</option>
+<option value="35">35</option>
+<option value="40">40</option>
+<option value="45">45</option>
+<option value="50">50</option>
+<option value="55">55</option>
+</select>
+<select id="ampm1">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+<label>until</label>
+<select id="time-hr2" name="hour">
+<option value="1">01</option>
+<option value="2">02</option>
+<option value="3">03</option>
+<option value="4">04</option>
+<option value="5">05</option>
+<option value="6">06</option>
+<option value="7">07</option>
+<option value="8">08</option>
+<option value="9">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+<label>:</label>
+<select id="time-min2" name="minute">
+<option value="0">00</option>
+<option value="5">05</option>
+<option value="10">10</option>
+<option value="15">15</option>
+<option value="20">20</option>
+<option value="25">25</option>
+<option value="30">30</option>
+<option value="35">35</option>
+<option value="40">40</option>
+<option value="45">45</option>
+<option value="50">50</option>
+<option value="55">55</option>
+</select>
+<select id="ampm2">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</div>
+
+<div class="row rep-5">
+
+    <label>Ends:</label>
+    <input class="row" id="end-type" title="ends on" type="radio"><label>On</label>
+    <input class="row" id="end-type" title="after occurences" type="radio"><label>After</label>
+    <select id="time-hr"  name="hour">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+</select>
+<label for="time-hr" title="Ends after a number of occurrences">
+times
+</label>
+
+<input id="datepicker" placeholder="End Date" type="text">
+<label>at</label>
+<select id="time-hr" name="hour">
+<option value="1">01</option>
+<option value="2">02</option>
+<option value="3">03</option>
+<option value="4">04</option>
+<option value="5">05</option>
+<option value="6">06</option>
+<option value="7">07</option>
+<option value="8">08</option>
+<option value="9">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+<label>:</label>
+<select id="time-min" name="minute">
+<option value="0">00</option>
+<option value="5">05</option>
+<option value="10">10</option>
+<option value="15">15</option>
+<option value="20">20</option>
+<option value="25">25</option>
+<option value="30">30</option>
+<option value="35">35</option>
+<option value="40">40</option>
+<option value="45">45</option>
+<option value="50">50</option>
+<option value="55">55</option>
+</select>
+<select id="ampm">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</div>
+
+<div class="rowr rep-6">
+<label>Repeats on days</label>
+<input id=":207.dow0" name="SU" checked="checked" aria-label="Repeat on Sunday" title="Sunday" type="checkbox">
+<label for=":207.dow0" title="Sunday">Sun</label>
+<input id=":207.dow1" name="MO" checked="checked" aria-label="Repeat on Monday" title="Monday" type="checkbox">
+<label for=":207.dow1" title="Monday">Mon</label>
+<input id=":207.dow2" name="TU" checked="checked" aria-label="Repeat on Tuesday" title="Tuesday" type="checkbox">
+<label for=":207.dow2" title="Tuesday">Tue</label>
+<input id=":207.dow3" name="WE" checked="checked" aria-label="Repeat on Wednesday" title="Wednesday" type="checkbox">
+<label for=":207.dow3" title="Wednesday">Wed</label>
+<input id=":207.dow4" name="TH" checked="checked" aria-label="Repeat on Thursday" title="Thursday" type="checkbox">
+<label for=":207.dow4" title="Thursday">Thu</label>
+<input id=":207.dow5" name="FR" checked="checked" aria-label="Repeat on Friday" title="Friday" type="checkbox">
+<label for=":207.dow5" title="Friday">Fri</label>
+<input id=":207.dow6" name="SA" checked="checked" aria-label="Repeat on Saturday" title="Saturday" type="checkbox">
+<label for=":207.dow6" title="Saturday">Sat</label>
+</div>
+
+<div class="row">
+<a class="btn btn-green">Schedule</a>
+<a class="btn btn-blue">Cancel</a>
+</div>
+
+<div class="summary row">Summary: Every 2 weeks on Tuesday, until Jan 31, 2017</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<div class="panel panel-default" ng-controller="adminListingsController">  
+
+    <div class="input-group  col-xs-4" style="padding:15px; width:100%">
+        <img class="img-rounded" style="float:left; border:1px solid grey;" ng-src="{{shopImgUrl}}" alt="" height='65' width='65'>
+        <input type="text" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:350px;" class="form-control" id="listingFilter" ng-model="myListingsFilter.Title" placeholder="search by title">
+    </div>  
+
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <thead>
+            <tr>
+                <th >&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-6">Title</th>
+                <th class="col-xs-1"><a class="listing-title" ng-click="sortListings('Price')">Price</a></th>
+                <th class="col-xs-1"><a class="listing-title" ng-click="sortListings('Views')">Views</a></th>
+                <th class="col-xs-1"><a class="listing-title" ng-click="sortListings('Likes')">Likes</a></th>
+                <th class="col-xs-4"><a class="listing-title" ng-click="sortListings('ExpiryDate')">Expires</a></th>
+            </tr>
+	</thead>
+    </table>
+    
+    <img id="mySpinner" src="images/loading.gif" style='display:block; margin:auto;' ng-show="loading" />
+    
+    <div style="overflow-y:auto; height:400px; width:100%;">
+        <table class="table table-hover table-condensed table-responsive table-fixed">
+            <tbody>
+                <tr class="listing-row" ng-repeat="listing in myListings | filter: myListingsFilter ">
+                    <td class="col-xs-1" >{{ listing.num }}</td>
+                    <td class="col-xs-1" ><img class="img-rounded" src='{{ listing.ImageUrl }}' alt="{{listing.ItemID}}"></td>
+                    <td class="col-xs-6" >{{ listing.Title }}</td>
+                    <td class="col-xs-1" >{{ listing.Price }}</td>
+                    <td class="col-xs-1" >{{ listing.Views }}</td>
+                    <td class="col-xs-1" >{{ listing.Likes }}</td>
+                    <td class="col-xs-4" ng-class="getCssClass(listing.ExpiryDate)">{{ listing.ExpiryDate.replace(' ','T') | date:'medium' }}</td>
+                </tr>
+            </tbody>
+        </table>				
+    </div>
+    
+</div>

@@ -1,0 +1,48 @@
+<div class="panel panel-default" ng-controller="adminController"> 	
+
+	<div class="input-group  col-xs-4" style="padding:15px; width:100%">
+		<input type="text" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:350px;" class="form-control" id="listingFilter" ng-model="myListingsFilter.shop_name" placeholder="search by shop">
+	</div>
+	   
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <thead>
+            <tr>
+                <!--<th class="col-xs-1">&nbsp;</th>-->
+                <th class="col-xs-1">&nbsp;</th>
+                <th class="col-xs-2">Title</th>
+                <th class="col-xs-1">Shop</th>
+                <th class="col-xs-1">Status</th>
+                <th class="col-xs-1">Scheduled Date/Time</th>
+                <th class="col-xs-1">Target Date/Time</th>
+                <th class="col-xs-1">Local Date/Time</th>
+                <th class="col-xs-1">Updated Date/Time</th>
+            </tr>
+	</thead>
+    </table>		    
+    <div style="overflow-y:auto; height:400px; width:100%;">
+    <table class="table table-hover table-condensed table-responsive table-fixed">
+        <tbody>
+        <tr ng-repeat = "renewal in admin_renewals | filter: myListingsFilter" >
+            <!--<td class="col-xs-1"><button type="button" class="btn btn-default" ng-click="delete(renewal)">Cancel</button></td>-->
+            <td class="col-xs-1"><img class='img-rounded' src='{{ renewal.ImageUrl }}' alt='{{renewal.ItemID}}' height='75' width='75'></td>
+            <td class="col-xs-2">{{ renewal.Title }}</td>
+            <td class="col-xs-1">{{ renewal.shop_name }}</td>
+            <td class="col-xs-1">{{ renewal.RenewalStatus }}</td>
+            <td class="col-xs-1">{{ renewal.ScheduledDateTime.replace(' ','T') | date:'medium' }}</td>    
+            <td class="col-xs-1">{{ renewal.TargetDateTime.replace(' ','T') | date:'medium' }}</td>    
+            <td class="col-xs-1">{{ renewal.LocalDateTime.replace(' ','T') | date:'medium' }}</td>    
+            <td class="col-xs-1">{{ renewal.UpdatedTimeStamp.replace(' ','T') | date:'medium' }}</td>    
+	</tr>
+    </tbody>
+    </table>				
+    </div>    
+</div>	 
+
+<style>
+    tr{    
+    padding: 0.4375em 1.5em 0.5em;
+    font-family: "Avenir Next W01","Avenir Next","Avenir",helvetica,arial,sans-serif;
+    font-size: 0.9em;
+    font-weight: 300;    
+}
+</style>

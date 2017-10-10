@@ -1,0 +1,151 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+    <title>SIMPLY AUTO RENEWAL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" >
+    <link rel="stylesheet" href="css/jquery.timepicker.min.css">              
+    <link rel="stylesheet" href="css/font-awesome.css" />   
+   <style>
+     
+    .align {
+        display:inline-block;
+        vertical-align:top; 
+    }   
+    .repeater, .repeater-2 {
+        display: none;
+    } 
+        
+    .navbar-default {
+      background-color: #ffffff;
+      border-color: #ffffff;
+    }
+    .navbar-default .navbar-brand {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-brand:hover,
+    .navbar-default .navbar-brand:focus {
+      color: #F4A71B;
+    }
+    .navbar-default .navbar-text {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-nav > li > a {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-nav > li > a:hover,
+    .navbar-default .navbar-nav > li > a:focus {
+      color: #F4A71B;
+    }
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+      color: #F4A71B;
+      background-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle {
+      border-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle:hover,
+    .navbar-default .navbar-toggle:focus {
+      background-color: #ffffff;
+    }
+    .navbar-default .navbar-toggle .icon-bar {
+      background-color: #66B9BF;
+    }
+    .navbar-default .navbar-collapse,
+    .navbar-default .navbar-form {
+      border-color: #66B9BF;
+    }
+    .navbar-default .navbar-link {
+      color: #66B9BF;
+    }
+    .navbar-default .navbar-link:hover {
+      color: #F4A71B;
+    }
+    .nav-title ,th{
+        color:#F4A71B;
+        font-weight: normal;
+    }    
+    h4{
+       color: #66B9BF; 
+    }
+    a[class=listing-title], a[class=listing-title]:hover{
+    	color:#F4A71B;
+    	text-decoration:none;
+    	font-weight: bold;
+    	cursor: pointer;
+    }
+    .listing-row, .img-selected{
+    	cursor: pointer;
+    }
+    .exipred-listing{
+       color:#ff0000;
+    } 
+    .menu-item{
+        font-weight: bold;
+    } 
+    tr{
+        font-family: Arial,helvetica;
+        font-size:13px; 
+    }
+    </style>
+         
+    </head>
+    <body>
+        <div class="container" ng-controller='mainController'>
+            <nav class="navbar navbar-default navbar-custom">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>                        
+                        </button> 
+                        <span class="navbar-brand"><img src="images/help/sar-logo.png" alt="SAR"></span>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li><a class="menu-item" href="#listings">RENEW</a></li>
+                            <li><a class="menu-item" href="#renewals">SCHEDULED</a></li>
+                            <li><a class="menu-item" href="#completed">COMPLETED</a></li>
+                            <li class="active menu-item"><a href="#/">SETTINGS</a></li>
+                            <li><a class="menu-item" href="#contact">CONTACT US</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">                            
+                            <li><a class="menu-item" href="#" onclick="signOut();">SIGN OUT</a></li>                            
+                        </ul>
+                    </div>
+                </div>
+            </nav> 
+            <!-- angular templating -->
+            <!-- this is where content will be injected -->		
+            <div id="main-container" ng-view></div>
+        </div>        
+    </body>
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>-->
+    <script type="text/javascript" src= "js/jquery.min.js"></script>
+    <script type="text/javascript" src= "js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src= "js/bootstrap.min.js" ></script> 
+    <script type="text/javascript" src= "js/angular.min.js" ></script> 
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>-->
+    
+    <script type="text/javascript" src= "js/jquery.timepicker.min.js"></script>
+    <script type="text/javascript" src= "js/angular-route.js"></script>
+    <script type="text/javascript" src= "js/main.js"></script>	
+    <script type="text/javascript" src= "js/listings.js"></script>    	  	   	
+    <script type="text/javascript" src= "js/renewals.js"></script>
+    <script type="text/javascript" src= "js/completed.js"></script>
+    <script type="text/javascript" src= "js/settings.js"></script>
+    <script type="text/javascript" src= "js/admin_renewals.js"></script>
+    <script type="text/javascript" src= "js/admin_users.js"></script>
+    <script type="text/javascript" src= "js/admin_listings.js"></script>
+    <script type="text/javascript" src= "js/contact.js"></script>
+    <script type="text/javascript" src= "js/payments.js"></script>
+    <script type="text/javascript" src= "js/success.js"></script>
+    
+    
+</html>
