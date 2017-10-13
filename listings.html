@@ -9,7 +9,7 @@
                 <option ng-repeat="section in mySections" value="{{section.shop_section_id}}">{{section.title}}</option>
             </select>
         <input type="text" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;" class="form-control" id="listingFilter" ng-model="myListingsFilter.Title" placeholder="search by title">                  	                                  
-                        
+        <span style="float:left; margin-left:15px; margin-top:25px;">Display</span>
         <select class="form-control input-group col-xs-2" id="sort-by" ng-model="sortByItem" ng-change="sortListings2()" ng-init="sortByItem = 1" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;">
                 <option value="1">oldest items first</option>
                 <option value="2">newest items first</option>
@@ -77,19 +77,19 @@
              </li>
              <li class="align">
                 <select class="form-control input-group col-xs-6" id="zone-list" onchange="setSelectedTimeZone()">                
-                    <option value="-8">Pacific Time - British Columbia, California, Washington</option>
-                    <option value="-7">Mountain Time - Colorado, Montana, Utah</option>
-                    <option value="-6">Central Time - Illinois, Texas, Manitoba, Mexico</option>                
-                    <option value="-5">Eastern Time - Boston, New York, Toronto, Montreal</option>                
-                    <option value="-4">Atlantic Time - New Brunswick, Nova Scotia, Bermuda</option>                
-                    <option value="0">Western European Time - Portugal, Morocco</option>                
-                    <option value="1">Central European Time - France, Germany, Italy</option>
-                    <option value="2">Eastern European Time - Bulgaria, Finland, Lithuania</option>
-                    <option value="3">Further-eastern European Time - Belarus, Moscow</option>
-                    <option value="4">Gulf Standard Time - Oman, United Arab Emirates </option>
-                    <option value="8">China Standard Time - China, Macau, Taiwan </option>
-                    <option value="9">Japan Standard Time - Japan Standard Time </option>
-                    <option value="10">Australian Eastern Standard Time - Australia </option>            
+                    <option value="-8">PACIFIC TIME - British Columbia, California, Washington</option>
+                    <option value="-7">MOUNTAIN TIME - Colorado, Montana, Utah</option>
+                    <option value="-6">CENTRAL TIME - Illinois, Texas, Manitoba, Mexico</option>                
+                    <option value="-5">EASTERN TIME - Boston, New York, Toronto, Montreal</option>                
+                    <option value="-4">ATLANTIC TIME - New Brunswick, Nova Scotia, Bermuda</option>                
+                    <option value="0">WESTERN EUROPEAN TIME - Portugal, Morocco</option>                
+                    <option value="1">CENTRAL EUROPEAN TIME - France, Germany, Italy</option>
+                    <option value="2">EASTERN EUROPEAN TIME - Bulgaria, Finland, Lithuania</option>
+                    <option value="3">FURTHER-EASTERN EUROPEAN TIME - Belarus, Moscow</option>
+                    <option value="4">GULF STANDARD TIME - Oman, United Arab Emirates </option>
+                    <option value="8">CHINA STANDARD TIME - China, Macau, Taiwan </option>
+                    <option value="9">JAPAN STANDARD TIME - Japan Standard Time </option>
+                    <option value="10">AUSTRALIAN EASTERN STANDARD TIME - Australia </option>            
                 </select>                 
              </li>
          </ol>
