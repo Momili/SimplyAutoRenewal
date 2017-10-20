@@ -2,7 +2,7 @@
 
     // include database and object files 
     include_once 'db_connection.php'; 
-    include_once 'renewal.php'; 
+    include_once 'test_renewal.php'; 
     require_once 'constants.php';
     
     // instantiate database and product object 
@@ -10,54 +10,72 @@
     $db = $database->getConnection();
  
     // initialize object
-    $renewal = new renewal($db);
+    $renewal = new test_renewal($db);
     
     // query scheduled items
     $stmt = $renewal->get_scheduled_items();
     $num = $stmt->rowCount();
     
-    echo "scheduled items count:".$num;
+    echo " - Scheduled items count:".$num;
     
     // check if more than 0 record found
     if($num>0){     
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             
-            if(trim($row['Title'])==="Random Item"){
-                //get items count for the shop from Etsy
+            if(trim($row['RenewType'])!="REG"){
+                
                 $shop_id=$row['shop_id'];
-                $data_count=get_list_count($shop_id);
-                $count=$data_count['count'];
-                echo "count=".$count;
+                
+                switch (trim($row['RenewType'])) {
+                    case 'RND':
+                        //get items count for the shop from Etsy                        
+                        $data_count=get_list_count($shop_id);
+                        $count=$data_count['count'];
+                        echo "count=".$count;                
+                        $item_array=UniqueRandomNumbersWithinRange(1, $count, $row['NumberOfItems']);
+                        break;
+                    case 'OLD':
+                        $item_array=get_items_by_sort_param($shop_id, $row['NumberOfItems'], "created", "up");
+                        break;
+                    case 'NEW':
+                        $item_array=get_items_by_sort_param($shop_id, $row['NumberOfItems'], "created", "down");
+                        break;
+                }                
+               
+                foreach ($item_array as $random)     {
+                
+                    //calc a random number
+                    //$random=mt_rand(0, $count-1);
+                    //echo "random=".$random;
 
-                //calc a random number
-                $random=mt_rand(0, $count-1);
-                echo "random=".$random;
+                    //get random item from etsy
+                    $data=get_random($shop_id, $random);
+                    
+                    $item_id=$data['results'][0]["listing_id"];
+                    echo "item_id=".$item_id;
 
-                //get random item from etsy
-                $data=get_random($shop_id, $random);
-                $item_id=$data['results'][0]["listing_id"];
-                echo "item_id=".$item_id;
-                
-                $row['ItemID']=$item_id;
-                echo "row['ItemID']".$row['ItemID'];
-                
-                //call renew item on etsy
-                renew_listing($row);
-                
-                echo "RenewalStatus=".$row['RenewalStatus'];
-                
-                if($row['RenewalStatus']==='F'){
-                    
-                    //add completed renewal into db
-                    add_renewal($renewal, $data['results'][0], $row);                    
-                    
-                    //update forever item in db
-                    update_forever_item($row, $renewal); 
-                }
-                else{
-                    //update the random item's row in db with an actual listing item
-                    echo "not forever!";
-                    update_random_item($data['results'][0], $row['ID'], $renewal);  
+                    $row['ItemID']=$item_id;
+                    echo "row['ItemID']".$row['ItemID'];
+
+                    //CALL RENEW ITEM ON ETSY
+                    //renew_listing($row);
+
+                    echo "RenewalStatus=".$row['RenewalStatus'];
+
+                    if($row['RenewalStatus']==='F'){
+
+                        //add completed renewal into db
+                        add_renewal($renewal, $data['results'][0], $row);                    
+
+                        //update forever item in db
+                        update_forever_item($row, $renewal); 
+                    }
+                    else{
+                        //update the random item's row in db with an actual listing item
+                        echo "not forever!";
+                        //TODO: figure out what todo insert new items delete the actual renewal placeholder
+                        //update_random_item($data['results'][0], $row['ID'], $renewal);  
+                    }
                 }
             }
             elseif(is_active($row['ItemID'])){
@@ -159,6 +177,16 @@
                 . "api_key=".ETSY_API_KEY."&"
                 . "sort_on=created&sort_order=up&"
                 . "limit=1&offset=".$random;    
+        return http_get($url);
+    }
+    
+    function get_items_by_sort_param($shop_id, $number_of_items, $sort_on, $sort_order){    
+        $url="https://openapi.etsy.com/v2/shops/".$shop_id."/listings/active?"
+                . "includes=Images%28url_75x75,hex_code%29&"
+                . "fields=listing_id,title,last_modified_tsz,ending_tsz,quantity,views,num_favorers&"
+                . "api_key=".ETSY_API_KEY."&"
+                . "sort_on=".$sort_on."&sort_order=".$sort_order."&"
+                . "limit=".$number_of_items."&offset=0";    
         return http_get($url);
     }
  
@@ -270,3 +298,8 @@
         $renewal->createNew();
 }
 
+    function UniqueRandomNumbersWithinRange($min, $max, $quantity) {
+        $numbers = range($min, $max);
+        shuffle($numbers);
+        return array_slice($numbers, 0, $quantity);
+    }   
