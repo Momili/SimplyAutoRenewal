@@ -25,6 +25,8 @@
             if(trim($row['RenewType'])!="REG"){
                 
                 $shop_id=$row['shop_id'];
+                $number_of_items=$row['NumberOfItems'];
+                $item_id=$row['ID'];                
                 
                 switch (trim($row['RenewType'])) {
                     case 'RND':
@@ -32,51 +34,16 @@
                         $data_count=get_list_count($shop_id);
                         $count=$data_count['count'];
                         echo "count=".$count;                
-                        $item_array=UniqueRandomNumbersWithinRange(1, $count, $row['NumberOfItems']);
+                        schedule_random(unique_random_numbers_within_range(1, $count, $number_of_items),$item_id, $shop_id);
                         break;
                     case 'OLD':
-                        $item_array=get_items_by_sort_param($shop_id, $row['NumberOfItems'], "created", "up");
+                        schedule_other(get_items_by_sort_param($shop_id, $number_of_items, "created", "up"),$item_id);
                         break;
                     case 'NEW':
-                        $item_array=get_items_by_sort_param($shop_id, $row['NumberOfItems'], "created", "down");
+                        schedule_other(get_items_by_sort_param($shop_id, $number_of_items, "created", "down"),$item_id);
                         break;
-                }                
-               
-                foreach ($item_array as $random)     {
+                }                               
                 
-                    //calc a random number
-                    //$random=mt_rand(0, $count-1);
-                    //echo "random=".$random;
-
-                    //get random item from etsy
-                    $data=get_random($shop_id, $random);
-                    
-                    $item_id=$data['results'][0]["listing_id"];
-                    echo "item_id=".$item_id;
-
-                    $row['ItemID']=$item_id;
-                    echo "row['ItemID']".$row['ItemID'];
-
-                    //CALL RENEW ITEM ON ETSY
-                    //renew_listing($row);
-
-                    echo "RenewalStatus=".$row['RenewalStatus'];
-
-                    if($row['RenewalStatus']==='F'){
-
-                        //add completed renewal into db
-                        add_renewal($renewal, $data['results'][0], $row);                    
-
-                        //update forever item in db
-                        update_forever_item($row, $renewal); 
-                    }
-                    else{
-                        //update the random item's row in db with an actual listing item
-                        echo "not forever!";
-                        //TODO: figure out what todo insert new items delete the actual renewal placeholder
-                        //update_random_item($data['results'][0], $row['ID'], $renewal);  
-                    }
-                }
             }
             elseif(is_active($row['ItemID'])){
                 echo "renew on etsy";
@@ -88,8 +55,7 @@
                     $renewal->add_forever_completed($row['ID']);
 
                     //update forever item in db
-                    update_forever_item($row, $renewal);     
-                    
+                    update_forever_item($row, $renewal);
                 }
                 else{
                     echo "active - renew renewal";
@@ -101,6 +67,41 @@
             }            
         }         
     } 
+    
+    function schedule_random($item_array, $item_id, $shop_id){
+        
+        foreach ($item_array as $item)     {
+                
+            //get random item from etsy
+            $data=get_random($shop_id, $item);
+                    
+            $item_id=$data['results'][0]["listing_id"];
+
+            $row['ItemID']=$item_id;
+
+            //CALL RENEW ITEM ON ETSY
+            //renew_listing($row);
+
+            if($row['RenewalStatus']==='F'){
+                //add completed renewal into db
+                add_renewal($renewal, $data['results'][0], $row);                    
+
+                //update forever item in db
+                update_forever_item($row, $renewal); 
+            }
+            else{
+                //update the random item's row in db with an actual listing item
+                echo "not forever!";
+                //TODO: figure out what todo insert new items delete the actual renewal placeholder
+                $renewal->update('C',$item_id);
+                //update_random_item($data['results'][0], $row['ID'], $renewal);  
+            }
+        }
+    }
+    
+    function schedule_other($item_array, $item_id){
+        
+    }
     
     function is_active($item_id){
         //echo $item_id;
@@ -298,7 +299,7 @@
         $renewal->createNew();
 }
 
-    function UniqueRandomNumbersWithinRange($min, $max, $quantity) {
+    function unique_random_numbers_within_range($min, $max, $quantity) {
         $numbers = range($min, $max);
         shuffle($numbers);
         return array_slice($numbers, 0, $quantity);
