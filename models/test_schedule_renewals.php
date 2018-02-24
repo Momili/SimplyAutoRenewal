@@ -16,38 +16,51 @@
     $stmt = $renewal->get_scheduled_items();
     $num = $stmt->rowCount();
     
-    echo " - Scheduled items count:".$num;
+    //echo " - Scheduled items count:".$num;
     
     // check if more than 0 record found
     if($num>0){     
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             
             if(trim($row['RenewType'])!="REG"){
-                
-                $shop_id=$row['shop_id'];
-                $number_of_items=$row['NumberOfItems'];
                 $item_id=$row['ID'];                
                 
                 switch (trim($row['RenewType'])) {
                     case 'RND':
-                        //get items count for the shop from Etsy                        
-                        $data_count=get_list_count($shop_id);
+                        //get shop's number of listings from Etsy                        
+                        $data_count=get_list_count($row['shop_id']);
                         $count=$data_count['count'];
                         echo "count=".$count;                
-                        schedule_random(unique_random_numbers_within_range(1, $count, $number_of_items),$item_id, $shop_id);
+                        $item_array=unique_random_numbers_within_range(1, $count, $row['NumberOfItems']);
+                        schedule_random($item_array, $row, $renewal);
                         break;
                     case 'OLD':
-                        schedule_other(get_items_by_sort_param($shop_id, $number_of_items, "created", "up"),$item_id);
+                        $item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", "up");
+                        schedule_oldest_or_newest($item_array, $row, $renewal);
                         break;
                     case 'NEW':
-                        schedule_other(get_items_by_sort_param($shop_id, $number_of_items, "created", "down"),$item_id);
+                        $item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", "down");
+                        schedule_oldest_or_newest($item_array, $row, $renewal);
                         break;
-                }                               
+                }                
                 
+                if($row['RenewalStatus']==='F'){
+                    
+                    //add completed renewal into db
+                    //$renewal->add_forever_completed($row['ID']);
+
+                    //update forever item in db
+                    update_forever_item($row, $renewal);
+                }
+                else{
+                    //cancel original row- $item_id renewal schedule
+                    $renewal->update('R',$item_id);
+                }
             }
             elseif(is_active($row['ItemID'])){
-                echo "renew on etsy";
-                renew_listing($row);
+
+                //CALL RENEW ITEM ON ETSY!!!
+                //renew_listing($row);
                 
                 if($row['RenewalStatus']==='F'){
                     
@@ -58,65 +71,91 @@
                     update_forever_item($row, $renewal);
                 }
                 else{
-                    echo "active - renew renewal";
+                    //echo "active - renew renewal";
                     $renewal->update('R',$row['ID']);
                 }
             }else {
-                echo "sold out - cancel renewal";
+                //echo "sold out - cancel renewal";
                 $renewal->update('C',$row['ID']);
             }            
         }         
     } 
     
-    function schedule_random($item_array, $item_id, $shop_id){
+    function schedule_random($item_array, $row, $renewal){        
         
-        foreach ($item_array as $item)     {
-                
+        foreach ($item_array as $item) {                
             //get random item from etsy
-            $data=get_random($shop_id, $item);
-                    
-            $item_id=$data['results'][0]["listing_id"];
+            $data=get_random($row['shop_id'], $item);                    
 
-            $row['ItemID']=$item_id;
+            $row['ItemID']=$data['results'][0]["listing_id"];
 
-            //CALL RENEW ITEM ON ETSY
+            //CALL RENEW ITEM ON ETSY!!!
             //renew_listing($row);
 
-            if($row['RenewalStatus']==='F'){
-                //add completed renewal into db
-                add_renewal($renewal, $data['results'][0], $row);                    
-
-                //update forever item in db
-                update_forever_item($row, $renewal); 
-            }
-            else{
                 //update the random item's row in db with an actual listing item
                 echo "not forever!";
                 //TODO: figure out what todo insert new items delete the actual renewal placeholder
-                $renewal->update('C',$item_id);
-                //update_random_item($data['results'][0], $row['ID'], $renewal);  
-            }
+                
+                //update_random_item($data['results'][0], $row['ID'], $renewal);
+
+                $orginal_id=$row['ID'];   
+                $Item_id=$data['results'][0]['listing_id'];
+                $title=$data['results'][0]['title'];
+                $image_url=$data['results'][0]['Images'][0]['url_75x75'];
+                $quantity=$data['results'][0]['quantity'];
+                $views= $data['results'][0]['views'];
+                $likes=$data['results'][0]['num_favorers'];
+                $epoch = $data['results'][0]['last_modified_tsz'];
+                $last_updated_date = new DateTime("@$epoch");   
+                $epoch = $data['results'][0]['ending_tsz'];
+                $expiry_date = new DateTime("@$epoch");
+                $renewal->add_scheduled_item($orginal_id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date );
         }
     }
     
-    function schedule_other($item_array, $item_id){
+    function schedule_oldest_or_newest($item_array, $row, $renewal){
         
+        foreach ($item_array['results'] as $item) { 
+            $row['ItemID']=$item["listing_id"];
+
+            //CALL RENEW ITEM ON ETSY!!!
+            //renew_listing($row);
+
+                //update the random item's row in db with an actual listing item
+                echo "not forever!";
+                //TODO: figure out what todo insert new items delete the actual renewal placeholder
+                
+                //update_random_item($item['results'][0], $row['ID'], $renewal);
+
+                $orginal_id=$row['ID'];   
+                $Item_id=$item['listing_id'];
+                $title=$item['title'];
+                $image_url=$item['Images'][0]['url_75x75'];
+                $quantity=$item['quantity'];
+                $views= $item['views'];
+                $likes=$item['num_favorers'];
+                $epoch = $item['last_modified_tsz'];
+                $last_updated_date = new DateTime("@$epoch");   
+                $epoch = $item['ending_tsz'];
+                $expiry_date = new DateTime("@$epoch"); 
+                $renewal->add_scheduled_item($orginal_id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date );
+        }
     }
     
-    function is_active($item_id){
+    function is_active($item_id){   
         //echo $item_id;
         $data=get_item_by_id($item_id);
         $quantity= $data['results'][0]["quantity"];
         $state=$data['results'][0]["state"];
         return ($quantity>0 && $state==="active");
-}
+    }
 
     function get_item_by_id($item_id){
         $url="https://openapi.etsy.com/v2/listings/".$item_id."?fields=quantity,state&api_key=".ETSY_API_KEY; 
         return http_get($url);
     }
     
-    // renew listing on Etsy
+    // RENEW THE LISTING ON  *** E T S Y ***
     function renew_listing($row){ 
         
         $access_token = $row['access_token'];
@@ -150,21 +189,21 @@
     }   
     
     function http_get($url){
-    //echo $url;
-    $ch = curl_init($url);
+        //echo $url;
+        $ch = curl_init($url);
 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $response_body = curl_exec($ch);
-    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response_body = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    if (intval($status) != 200) {
-        throw new \Exception("HTTP $status\n$response_body");
+        if (intval($status) != 200) {
+            throw new \Exception("HTTP $status\n$response_body");
+        }
+        else{
+            return json_decode($response_body, TRUE);
+        }
     }
-    else{
-        return json_decode($response_body, TRUE);
-    }
-}
 
     function get_list_count($shop_id){
         $url="https://openapi.etsy.com/v2/shops/".$shop_id."/listings/active?fields=listing_id&api_key=".ETSY_API_KEY."&limit=1&offset=0";
@@ -231,17 +270,17 @@
     }
     
     function get_interval($unit, $timespan){   
-        if ($unit=='1'){
+        if ($unit=='m'){
             return '+'.$timespan.' minute';
-        }elseif ($unit=='2'){
+        }elseif ($unit=='h'){
             return '+'.$timespan.' hour';    
-        }elseif ($unit=='3'){
+        }elseif ($unit=='d'){
             return '+'.$timespan.' day';    
-        }elseif ($unit=='4'){
+        }elseif ($unit=='w'){
             $timespan=$timespan*7;
             return '+'.$timespan.' day';    //weeks  
         }    
-}
+    }
     
     function get_schedule_dates($row){
         //current schedule values
@@ -253,7 +292,7 @@
         //echo "before target_date_time=".$target_date_time->format('Y-m-d H:i:s');
         //echo "before local_date_time=".$local_date_time->format('Y-m-d H:i:s');
                     
-        $unit=$row['Unit'];// - 1=min,2=hour,3=day,4=week
+        $unit=$row['Unit'];// - m=min,h=hour,d=day,w=week
         $frequency=$row['Frequency'];// - 1-20
         $mod = get_interval($unit, $frequency);
                     
@@ -294,7 +333,7 @@
         $renewal->LocalDateTime = $db_row["LocalDateTime"];
         $renewal->Unit = $db_row["Unit"];
         $renewal->Frequency = $db_row["Frequency"];
-        $renewal->RenewType = 'RND';
+        $renewal->RenewType = $db_row["RenewType"];
         // create the renewal
         $renewal->createNew();
 }
