@@ -2,7 +2,7 @@
     
     // database connection and table name 
     private $conn; 
-    private $table_name = "renewals"; 
+    private $table_name = "test_renewals"; 
     
     // object properties 
     public $ID; 
@@ -248,7 +248,7 @@
                   AND ShopID=". $shopId ."
                   AND Month(ScheduledDateTime)=".$month."
                   ORDER BY ScheduledDateTime DESC";
-    
+   
     	// prepare query statement
     	$stmt = $this->conn->prepare( $query );
     	// execute query
