@@ -83,7 +83,8 @@
     
     function schedule_random($item_array, $row, $renewal){        
         
-        foreach ($item_array as $item) {                
+        foreach ($item_array as $item) {   
+            
             //get random item from etsy
             $data=get_random($row['shop_id'], $item);                    
 
