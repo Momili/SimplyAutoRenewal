@@ -22,7 +22,7 @@
         <table class="table table-hover table-condensed table-responsive table-fixed">
             <tbody>
 	        <tr ng-repeat = "completed in myCompleted" >
-                    <td class="col-xs-1">{{ completed.RenewType==='RND'?'Random':'' }}</td>
+                    <td class="col-xs-1">{{ completed.RenewType==='RND'?'Random':completed.RenewType==='NEW'?'Newest':completed.RenewType==='OLD'?'Oldest':'Regular' }}</td>
                     <td class="col-xs-1"><img class='img-rounded' src='{{ completed.ImageUrl }}' alt='' height='65' width='65'></td>                    
                     <td class="col-xs-8">{{ completed.Title }}</td>
                     <td class="col-xs-4">{{ completed.LocalDateTime.replace(' ','T') | date:'medium' }}</td>    
