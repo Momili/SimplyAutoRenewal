@@ -133,7 +133,7 @@
     		// prepare query
     		$stmt = $this->conn->prepare($query);
     		
-    		echo $query."</br>";
+    		//echo $query."</br>";
     		
     		// execute query
     		$stmt->execute();
@@ -184,9 +184,11 @@
      function add_scheduled_item($id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date ){
         try{
         $query="INSERT INTO " .$this->table_name ."(UserID,ShopID,ItemID,Title,ImageUrl,Quantity,Views,Likes,LastUpdatedDate,ExpiryDate
-                ,ScheduledDateTime,ScheduledDate,ScheduledTime,RenewalStatus,UpdatedTimeStamp,TargetDateTime,LocalDateTime,Unit,Frequency,RenewType)
+                ,ScheduledDateTime,ScheduledDate,ScheduledTime,RenewalStatus,UpdatedTimeStamp,TargetDateTime,LocalDateTime,Unit,Frequency,RenewType
+                ,EndDate,EndTIme,NumberOfItems,Sun,Mon,Tue,Wed,Thu,Fri,Sat,TargetTz,LocalTz)
                 SELECT UserID,ShopID,'". $Item_id."','". $title."','". $image_url."','". $quantity."','". $views."','". $likes."','". $last_updated_date->format('Y-m-d H:i:s')."','". $expiry_date->format('Y-m-d H:i:s')."'
                 ,ScheduledDateTime,ScheduledDate,ScheduledTime,'R','". date('Y-m-d H:i:s') ."',TargetDateTime,LocalDateTime,Unit,Frequency,RenewType
+                ,EndDate,EndTIme,NumberOfItems,Sun,Mon,Tue,Wed,Thu,Fri,Sat,TargetTz,LocalTz
                 FROM " .$this->table_name ."
                 WHERE ID='". $id ."'" ;
     		$stmt = $this->conn->prepare($query);
@@ -224,7 +226,8 @@
                   AND r.ScheduledDateTime<=Now() 
                   AND r.ScheduledDateTime>=DATE_SUB(Now(),INTERVAL 2 hour)
                   AND u.expiry_date>=Now()
-                  AND ((DAYOFWEEK(CURRENT_DATE())=1 AND r.Sun='Y') OR
+                  AND (r.Unit='d' OR
+                       (DAYOFWEEK(CURRENT_DATE())=1 AND r.Sun='Y') OR
                        (DAYOFWEEK(CURRENT_DATE())=2 AND r.Mon='Y') OR
                        (DAYOFWEEK(CURRENT_DATE())=3 AND r.Tue='Y') OR
                        (DAYOFWEEK(CURRENT_DATE())=4 AND r.Wed='Y') OR
@@ -233,7 +236,7 @@
                        (DAYOFWEEK(CURRENT_DATE())=7 AND r.Sat='Y'))
                   ORDER BY ScheduledDateTime";
                           
-        echo($query);
+        //echo($query);
         
         //AND (date(ScheduledDate)<'".date('Y-m-d')."'
         //OR (date(ScheduledDate)='".date('Y-m-d')."'

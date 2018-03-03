@@ -31,24 +31,22 @@
                         $data_count=get_list_count($row['shop_id']);
                         $count=$data_count['count'];
                         echo "count=".$count;                
-                        $item_array=unique_random_numbers_within_range(1, $count, $row['NumberOfItems']);
+                        $item_array=get_unique_random_numbers_within_range(1, $count, $row['NumberOfItems']);
                         schedule_random($item_array, $row, $renewal);
                         break;
                     case 'OLD':
-                        $item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", "up");
-                        schedule_oldest_or_newest($item_array, $row, $renewal);
+                        //$item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", "up");
+                        //schedule_oldest_or_newest($item_array, $row, $renewal);
+                        schedule_oldest_or_newest($renewal, $row, "up");
                         break;
                     case 'NEW':
-                        $item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", "down");
-                        schedule_oldest_or_newest($item_array, $row, $renewal);
+                        //$item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", "down");
+                        //schedule_oldest_or_newest($item_array, $row, $renewal);
+                        schedule_oldest_or_newest($renewal, $row, "down");
                         break;
                 }                
                 
                 if($row['RenewalStatus']==='F'){
-                    
-                    //add completed renewal into db
-                    //$renewal->add_forever_completed($row['ID']);
-
                     //update forever item in db
                     update_forever_item($row, $renewal);
                 }
@@ -75,7 +73,7 @@
                     $renewal->update('R',$row['ID']);
                 }
             }else {
-                //echo "sold out - cancel renewal";
+                //echo "sold out sweety - cancel renewal";
                 $renewal->update('C',$row['ID']);
             }            
         }         
@@ -84,37 +82,31 @@
     function schedule_random($item_array, $row, $renewal){        
         
         foreach ($item_array as $item) {   
-            
             //get random item from etsy
             $data=get_random($row['shop_id'], $item);                    
-
             $row['ItemID']=$data['results'][0]["listing_id"];
 
             //CALL RENEW ITEM ON ETSY!!!
             //renew_listing($row);
 
-                //update the random item's row in db with an actual listing item
-                echo "not forever!";
-                //TODO: figure out what todo insert new items delete the actual renewal placeholder
-                
-                //update_random_item($data['results'][0], $row['ID'], $renewal);
-
-                $orginal_id=$row['ID'];   
-                $Item_id=$data['results'][0]['listing_id'];
-                $title=$data['results'][0]['title'];
-                $image_url=$data['results'][0]['Images'][0]['url_75x75'];
-                $quantity=$data['results'][0]['quantity'];
-                $views= $data['results'][0]['views'];
-                $likes=$data['results'][0]['num_favorers'];
-                $epoch = $data['results'][0]['last_modified_tsz'];
-                $last_updated_date = new DateTime("@$epoch");   
-                $epoch = $data['results'][0]['ending_tsz'];
-                $expiry_date = new DateTime("@$epoch");
-                $renewal->add_scheduled_item($orginal_id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date );
+            $orginal_id=$row['ID'];   
+            $Item_id=$data['results'][0]['listing_id'];
+            $title=$data['results'][0]['title'];
+            $image_url=$data['results'][0]['Images'][0]['url_75x75'];
+            $quantity=$data['results'][0]['quantity'];
+            $views= $data['results'][0]['views'];
+            $likes=$data['results'][0]['num_favorers'];
+            $epoch = $data['results'][0]['last_modified_tsz'];
+            $last_updated_date = new DateTime("@$epoch");   
+            $epoch = $data['results'][0]['ending_tsz'];
+            $expiry_date = new DateTime("@$epoch");
+            $renewal->add_scheduled_item($orginal_id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date );
         }
     }
     
-    function schedule_oldest_or_newest($item_array, $row, $renewal){
+    function schedule_oldest_or_newest($renewal, $row, $upOrDown){  
+        
+        $item_array=get_items_by_sort_param($row['shop_id'], $row['NumberOfItems'], "created", $upOrDown);
         
         foreach ($item_array['results'] as $item) { 
             $row['ItemID']=$item["listing_id"];
@@ -122,24 +114,18 @@
             //CALL RENEW ITEM ON ETSY!!!
             //renew_listing($row);
 
-                //update the random item's row in db with an actual listing item
-                echo "not forever!";
-                //TODO: figure out what todo insert new items delete the actual renewal placeholder
-                
-                //update_random_item($item['results'][0], $row['ID'], $renewal);
-
-                $orginal_id=$row['ID'];   
-                $Item_id=$item['listing_id'];
-                $title=$item['title'];
-                $image_url=$item['Images'][0]['url_75x75'];
-                $quantity=$item['quantity'];
-                $views= $item['views'];
-                $likes=$item['num_favorers'];
-                $epoch = $item['last_modified_tsz'];
-                $last_updated_date = new DateTime("@$epoch");   
-                $epoch = $item['ending_tsz'];
-                $expiry_date = new DateTime("@$epoch"); 
-                $renewal->add_scheduled_item($orginal_id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date );
+            $orginal_id=$row['ID'];   
+            $Item_id=$item['listing_id'];
+            $title=$item['title'];
+            $image_url=$item['Images'][0]['url_75x75'];
+            $quantity=$item['quantity'];
+            $views= $item['views'];
+            $likes=$item['num_favorers'];
+            $epoch = $item['last_modified_tsz'];
+            $last_updated_date = new DateTime("@$epoch");   
+            $epoch = $item['ending_tsz'];
+            $expiry_date = new DateTime("@$epoch"); 
+            $renewal->add_scheduled_item($orginal_id, $Item_id, $title, $image_url, $quantity, $views, $likes, $last_updated_date, $expiry_date );
         }
     }
     
@@ -287,12 +273,8 @@
         //current schedule values
         $schedule_date_time = new DateTime($row["ScheduledDateTime"]);
         $target_date_time = new DateTime($row["TargetDateTime"]);                    
-        $local_date_time = new DateTime($row["LocalDateTime"]);
-        
-        //echo "before schedule_date_time=".$schedule_date_time->format('Y-m-d H:i:s');
-        //echo "before target_date_time=".$target_date_time->format('Y-m-d H:i:s');
-        //echo "before local_date_time=".$local_date_time->format('Y-m-d H:i:s');
-                    
+        $local_date_time = new DateTime($row["LocalDateTime"]);        
+       
         $unit=$row['Unit'];// - m=min,h=hour,d=day,w=week
         $frequency=$row['Frequency'];// - 1-20
         $mod = get_interval($unit, $frequency);
@@ -300,10 +282,25 @@
         //calculate next renewal schedule dates
         $schedule_date_time->modify($mod);        
         $target_date_time->modify($mod);        
-        $local_date_time->modify($mod);     
+        $local_date_time->modify($mod);       
         
         $scheduledDate = $schedule_date_time->format('Y-m-d');
         $scheduledTime = $schedule_date_time->format('H:i:s');
+        
+        $end_time = new DateTime(($row["EndTime"]));        
+        
+        if($scheduledTime > $end_time->format('H:i:s')){
+            //set schedule-time from original start-time
+            $scheduledTime='07:30:00';
+            do{
+               //advance a day
+              $schedule_date_time->add(new DateInterval('P1D')); // P1D means a period of 1 day
+              $scheduledDate = $schedule_date_time->format('Y-m-d');
+              $dayofweek=$schedule_date_time->format('D');
+              
+            }while($row[$dayofweek]!='Y'); 
+            $schedule_date_time=new DateTime($scheduledDate.$scheduledTime);
+        }        
 
         return array( $schedule_date_time->format('Y-m-d H:i:s'), $scheduledDate, $scheduledTime, $target_date_time->format('Y-m-d H:i:s'), $local_date_time->format('Y-m-d H:i:s') );
     }
@@ -339,7 +336,7 @@
         $renewal->createNew();
 }
 
-    function unique_random_numbers_within_range($min, $max, $quantity) {
+    function get_unique_random_numbers_within_range($min, $max, $quantity) {
         $numbers = range($min, $max);
         shuffle($numbers);
         return array_slice($numbers, 0, $quantity);
