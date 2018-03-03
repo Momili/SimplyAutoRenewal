@@ -5,11 +5,11 @@
             
             
         <select ng-model="mySectionsFilter.shop_section_id" name="repeatSelect" id="repeatSelect" class="form-control" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;" >
-                <option value="">all Items ({{myListings.length}})</option>
-                <option ng-repeat="section in mySections" value="{{section.shop_section_id}}">{{section.title}}</option>
-            </select>
+            <option value="">all Items ({{myListings.length}})</option>
+            <option ng-repeat="section in mySections" value="{{section.shop_section_id}}">{{section.title}}</option>
+        </select>
         <input type="text" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;" class="form-control" id="listingFilter" ng-model="myListingsFilter.Title" placeholder="search by title">                  	                                  
-        <span style="float:left; margin-left:15px; margin-top:25px;">Display</span>
+        <span class="help-block" style="float:left; margin-left:15px; margin-top:25px;">Display</span>
         <select class="form-control input-group col-xs-2" id="sort-by" ng-model="sortByItem" ng-change="sortListings2()" ng-init="sortByItem = 1" style="float:left; margin-left:10px; margin-top:15px; margin-right:10px; width:300px;">
                 <option value="1">oldest items first</option>
                 <option value="2">newest items first</option>
@@ -183,11 +183,10 @@
                 </select>
             </li>
             <li class="align repeater repeater repeater-2">
-                <select class="form-control " id="unit">
-                    <option value="1" title="Minutes">minute(s)</option>
-                    <option value="2" title="Hours">hour(s)</option>
-                    <option value="3" title="Dails">day(s)</option>
-                    <option value="4" title="Weeks">week(s)</option>
+                <select class="form-control" id="unit">                    
+                    <option value="1" title="Minutes">minute(s)</option>   
+                    <option value="2" title="Hours" >hour(s)</option>
+                    <option value="3" title="Days">day(s)</option>                    
                 </select>
             </li>             
          </ol>
@@ -497,7 +496,7 @@
       }
     });
     
-    $("#unit").val("1").change();
+    $("#unit").val("2").change();
     
     $("#schedule-items").change(function () {
           repeaters = document.getElementsByClassName('selection-pnl');
