@@ -1,4 +1,4 @@
-<?php class test_renewal{ 
+<?php class renewal2{ 
 
  // database connection and table name 
     private $conn; 
@@ -99,9 +99,9 @@
             $stmt->bindParam(':Unit', $this->Unit);            
             $stmt->bindParam(':Frequency', $this->Frequency);            
             $stmt->bindParam(':RenewType', $this->RenewType); 
-            $stmt->bindParam(':StartDate', $this->StartDate);
+            $stmt->bindParam(':StartDate', $this->EndDate);
             $stmt->bindParam(':EndDate', $this->EndDate);
-            $stmt->bindParam(':StartTime', $this->StartTime);
+            $stmt->bindParam(':StartTime', $this->EndTime);
             $stmt->bindParam(':EndTime', $this->EndTime);            
             $stmt->bindParam(':NumberOfItems', $this->NumberOfItems);
             $stmt->bindParam(':Sun', $this->Sun);
@@ -232,8 +232,7 @@
                   AND r.ScheduledDateTime<=Now() 
                   AND r.ScheduledDateTime>=DATE_SUB(Now(),INTERVAL 2 hour)
                   AND u.expiry_date>=Now()
-                  AND (r.RenewalStatus='S' OR
-                       r.Unit='d' OR
+                  AND (r.Unit='d' OR
                        (DAYOFWEEK(CURRENT_DATE())=1 AND r.Sun='Y') OR
                        (DAYOFWEEK(CURRENT_DATE())=2 AND r.Mon='Y') OR
                        (DAYOFWEEK(CURRENT_DATE())=3 AND r.Tue='Y') OR
@@ -243,7 +242,7 @@
                        (DAYOFWEEK(CURRENT_DATE())=7 AND r.Sat='Y'))
                   ORDER BY ScheduledDateTime";
                           
-        echo($query);
+        //echo($query);
         
         //AND (date(ScheduledDate)<'".date('Y-m-d')."'
         //OR (date(ScheduledDate)='".date('Y-m-d')."'
@@ -337,15 +336,5 @@
         $stmt = $this->conn->prepare($query); 
         // execute query
         $stmt->execute();        
-    }
-    
-    function delete_renewal_by_id(){
-        $query ="DELETE FROM " .$this->table_name."
-                 WHERE ID=".$this->ID;            
-        echo $query;
-        // prepare query
-        $stmt = $this->conn->prepare($query); 
-        // execute query
-        $stmt->execute();   
     }
 }

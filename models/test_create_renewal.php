@@ -31,31 +31,32 @@ require_once 'constants.php';
     $testRenewal->LastUpdatedDate = '2017-06-21 15:30:16';
     $testRenewal->ExpiryDate = '2017-10-21 15:30:16';
         
-    $testRenewal->RenewalStatus = 'F';
+    $testRenewal->RenewalStatus = 'R';//SHCEDULE ONCE
     $testRenewal->ScheduledDateTime = date('Y-m-d H:i:s');//$data['renewals'][$i]["ScheduledDateTime"];//$data->ScheduledDate;
-    $testRenewal->ScheduledDate = date('Y-m-d');//$data['renewals'][$i]["ScheduledDate"];//$data->ScheduledDate;
+    $testRenewal->ScheduledDate = date('Y-m-d H:i:s');//$data['renewals'][$i]["ScheduledDate"];//$data->ScheduledDate;
     $testRenewal->ScheduledTime = date('H:i:s');//$data['renewals'][$i]["ScheduledTime"];//$data->ScheduledTime;
     $testRenewal->UpdatedTimeStamp = date('Y-m-d H:i:s');
     $testRenewal->TargetDateTime = date('Y-m-d H:i:s');//$data['renewals'][$i]["TargetDateTime"];
     $testRenewal->LocalDateTime = date('Y-m-d H:i:s');//$data['renewals'][$i]["LocalDateTime"];
     
-    $testRenewal->Unit = 'd'; //h- hour, m- minute, d- day
-    $testRenewal->Frequency = '2'; //1-30
+    $testRenewal->Unit = 'h'; //h- hour, m- minute, d- day
+    $testRenewal->Frequency = '3'; //1-30
     $testRenewal->RenewType = 'REG'; //REG,RND,OLD,NEW
     
-    $testRenewal->EndDate=date('Y-m-d');
-    $testRenewal->EndTime=date('H:i:s');
+    $testRenewal->StartDate=date('Y-m-d');
+    $testRenewal->EndDate=date('Y-m-d');//, strtotime("+ 1 day"));
+    $testRenewal->StartTime=date('H:i:s');
+    $testRenewal->EndTime=date('H:i:s', strtotime("+ 1 hours"));
     $testRenewal->NumberOfItems=1;
     $testRenewal->Sun='N';
     $testRenewal->Mon='N';
-    $testRenewal->Tue='N';
+    $testRenewal->Tue='Y';
     $testRenewal->Wed='N';
     $testRenewal->Thu='N';
-    $testRenewal->Fri='N';
+    $testRenewal->Fri='Y';
     $testRenewal->Sat='N';
     $testRenewal->TargetTZ=-1;
     $testRenewal->LocalTZ=-2;
-    
     // create the renewal
     $testRenewal->createNew();
     
@@ -189,7 +190,7 @@ require_once 'constants.php';
     $testRenewal->LastUpdatedDate = '2010-06-21 15:30:16';
     $testRenewal->ExpiryDate = '2010-10-21 15:30:16';
         
-    $testRenewal->RenewalStatus = 'F';
+    $testRenewal->RenewalStatus = 'S';
     $testRenewal->ScheduledDateTime = date('Y-m-d H:i:s');//$data['renewals'][$i]["ScheduledDateTime"];//$data->ScheduledDate;
     $testRenewal->ScheduledDate = date('Y-m-d');//$data['renewals'][$i]["ScheduledDate"];//$data->ScheduledDate;
     $testRenewal->ScheduledTime = date('H:i:s');//$data['renewals'][$i]["ScheduledTime"];//$data->ScheduledTime;

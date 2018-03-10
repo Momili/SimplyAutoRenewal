@@ -7,14 +7,14 @@
     // include database and object files 
     include_once 'constants.php';
     include_once 'db_connection.php'; 
-    include_once 'renewal.php';     
+    include_once 'test_renewal.php';     
     
     //instantiate database and product object 
     $database = new db_connection(); 
     $db = $database->getConnection();
  
     // initialize object
-    $renewal = new renewal($db);
+    $renewal = new test_renewal($db);
 
     $stmt = $renewal->read_all_renewals(date('m'));
     $num = $stmt->rowCount();

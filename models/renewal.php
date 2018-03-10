@@ -2,7 +2,7 @@
     
     // database connection and table name 
     private $conn; 
-    private $table_name = "test_renewals"; 
+    private $table_name = "renewals"; 
     
     // object properties 
     public $ID; 

@@ -46,13 +46,13 @@
                         break;
                 }                
                 
-                if($row['RenewalStatus']==='F'){
+                if($row['RenewalStatus']==='F' OR $row['RenewalStatus']==='R'){
                     //update forever item in db
                     update_forever_item($row, $renewal);
                 }
                 else{
                     //cancel original row- $item_id renewal schedule
-                    $renewal->update('R',$item_id);
+                    $renewal->update('C',$item_id);
                 }
             }
             elseif(is_active($row['ItemID'])){
@@ -60,7 +60,7 @@
                 //CALL RENEW ITEM ON ETSY!!!
                 //renew_listing($row);
                 
-                if($row['RenewalStatus']==='F'){
+                if($row['RenewalStatus']==='F' OR $row['RenewalStatus']==='R'){
                     
                     //add completed renewal into db
                     $renewal->add_forever_completed($row['ID']);
@@ -70,11 +70,11 @@
                 }
                 else{
                     //echo "active - renew renewal";
-                    $renewal->update('R',$row['ID']);
+                    $renewal->update('C',$row['ID']);
                 }
             }else {
                 //echo "sold out sweety - cancel renewal";
-                $renewal->update('C',$row['ID']);
+                $renewal->update('D',$row['ID']);
             }            
         }         
     } 
@@ -244,7 +244,7 @@
         $renewal->UpdatedTimeStamp = date('Y-m-d H:i:s');        
         
         //calc next renewal date/time        
-        list( $scheduled_date_time, $scheduled_date, $scheduled_time, $target_date_time, $local_date_time )=get_schedule_dates($row);              
+        list( $scheduled_date_time, $scheduled_date, $scheduled_time, $target_date_time, $local_date_time ) = get_schedule_dates($row);              
         $renewal->ScheduledDateTime=$scheduled_date_time;
         $renewal->ScheduledDate=$scheduled_date;
         $renewal->ScheduledTime=$scheduled_time;
@@ -252,8 +252,23 @@
         $renewal->LocalDateTime=$local_date_time;
         
         $renewal->ID=$row['ID'];        
-        //update the renewal
-        $renewal->update_forever();
+        if($row['RenewalStatus']==='R'){
+            $end_date = $row["EndDate"];
+            $end_time = $row["EndTime"];
+            $end_date_time = new DateTime($end_date.$end_time);
+            if($scheduled_date_time <= $end_date_time->format('Y-m-d H:i:s')){
+                //update the renewal
+                $renewal->update_forever();
+            }
+            else
+            {
+                $renewal->delete_renewal_by_id();
+            }
+        }
+        else{
+            //update the renewal
+            $renewal->update_forever();
+        }
     }
     
     function get_interval($unit, $timespan){   
@@ -279,7 +294,7 @@
         $frequency=$row['Frequency'];// - 1-20
         $mod = get_interval($unit, $frequency);
                     
-        //calculate next renewal schedule dates
+        //calculate/advance next renewal schedule dates
         $schedule_date_time->modify($mod);        
         $target_date_time->modify($mod);        
         $local_date_time->modify($mod);       
@@ -287,21 +302,20 @@
         $scheduledDate = $schedule_date_time->format('Y-m-d');
         $scheduledTime = $schedule_date_time->format('H:i:s');
         
-        $end_time = new DateTime(($row["EndTime"]));        
-        
+        $end_time = new DateTime(($row["EndTime"]));  
         if($scheduledTime > $end_time->format('H:i:s')){
             //set schedule-time from original start-time
-            $scheduledTime='07:30:00';
+            $scheduledTime=new DateTime(($row["StartTime"]));
+
             do{
-               //advance a day
+               //advance days as needed
               $schedule_date_time->add(new DateInterval('P1D')); // P1D means a period of 1 day
               $scheduledDate = $schedule_date_time->format('Y-m-d');
-              $dayofweek=$schedule_date_time->format('D');
-              
-            }while($row[$dayofweek]!='Y'); 
-            $schedule_date_time=new DateTime($scheduledDate.$scheduledTime);
-        }        
-
+              $dayofweek=$schedule_date_time->format('D');              
+            }while($row[$dayofweek]!='Y');            
+            $schedule_date_time = new DateTime($scheduledDate.$scheduledTime->format('H:i:s'));   
+        }
+        
         return array( $schedule_date_time->format('Y-m-d H:i:s'), $scheduledDate, $scheduledTime, $target_date_time->format('Y-m-d H:i:s'), $local_date_time->format('Y-m-d H:i:s') );
     }
     
