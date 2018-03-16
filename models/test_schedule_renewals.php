@@ -51,8 +51,8 @@
                     update_forever_item($row, $renewal);
                 }
                 else{
-                    //cancel original row- $item_id renewal schedule
-                    $renewal->update('C',$item_id);
+                    //mark original row as completed - $item_id renewal schedule
+                    $renewal->update('D',$item_id);
                 }
             }
             elseif(is_active($row['ItemID'])){
@@ -71,7 +71,7 @@
                 else{
                     //echo "active - renew renewal";
                     $renewal->update('C',$row['ID']);
-                }
+                }              
             }else {
                 //echo "sold out sweety - cancel renewal";
                 $renewal->update('D',$row['ID']);
@@ -244,25 +244,27 @@
         $renewal->UpdatedTimeStamp = date('Y-m-d H:i:s');        
         
         //calc next renewal date/time        
-        list( $scheduled_date_time, $scheduled_date, $scheduled_time, $target_date_time, $local_date_time ) = get_schedule_dates($row);              
-        $renewal->ScheduledDateTime=$scheduled_date_time;
-        $renewal->ScheduledDate=$scheduled_date;
-        $renewal->ScheduledTime=$scheduled_time;
-        $renewal->TargetDateTime=$target_date_time;
-        $renewal->LocalDateTime=$local_date_time;
+        //list( $scheduled_date_time, $scheduled_date, $scheduled_time, $target_date_time, $local_date_time ) = get_schedule_dates($row);              
+        list( $scheduled_date_time, $target_date_time, $local_date_time ) = get_schedule_dates($row);              
+        $renewal->ScheduledDateTime=$scheduled_date_time->format('Y-m-d H:i:s');
+        $renewal->ScheduledDate=$scheduled_date_time->format('Y-m-d');
+        $renewal->ScheduledTime=$scheduled_date_time->format('H:i:s');
+        $renewal->TargetDateTime=$target_date_time->format('Y-m-d H:i:s');
+        $renewal->LocalDateTime=$local_date_time->format('Y-m-d H:i:s');
         
         $renewal->ID=$row['ID'];        
         if($row['RenewalStatus']==='R'){
             $end_date = $row["EndDate"];
             $end_time = $row["EndTime"];
             $end_date_time = new DateTime($end_date.$end_time);
-            if($scheduled_date_time <= $end_date_time->format('Y-m-d H:i:s')){
+            if($scheduled_date_time <= $end_date_time){
                 //update the renewal
                 $renewal->update_forever();
             }
             else
             {
                 $renewal->delete_renewal_by_id();
+                //$renewal->update('C',$row['ID']);
             }
         }
         else{
@@ -316,7 +318,8 @@
             $schedule_date_time = new DateTime($scheduledDate.$scheduledTime->format('H:i:s'));   
         }
         
-        return array( $schedule_date_time->format('Y-m-d H:i:s'), $scheduledDate, $scheduledTime, $target_date_time->format('Y-m-d H:i:s'), $local_date_time->format('Y-m-d H:i:s') );
+        //return array( $schedule_date_time->format('Y-m-d H:i:s'), $scheduledDate, $scheduledTime, $target_date_time->format('Y-m-d H:i:s'), $local_date_time->format('Y-m-d H:i:s') );
+        return array( $schedule_date_time, $target_date_time, $local_date_time );
     }
     
     function add_renewal($renewal, $etsy_data, $db_row){    
