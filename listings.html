@@ -246,7 +246,7 @@
            <li class="align"><input type="text" class="form-control date-picker" id="datepicker-from" placeholder="Start Date"></li>
            <li class="align"><span class="help-block">ending</span></li>
            <li class="align"><input type="text" class="form-control date-picker" id="datepicker-to" placeholder="End Date"></li>
-           <li class="align"><input type="checkbox" id="forever" name="forever" class="form-control" ></li>
+           <li class="align"><input type="checkbox" id="for-ever" name="for-ever" class="form-control" ></li>
            <li class="align" ><span class="help-block" data-toggle="tooltip" title="When I cancel this renewal." >NEVER!</span></li>
         </ol>   
     </div>
@@ -290,7 +290,7 @@
             </select>
         </li>
         <li class="align">
-            <select id="ampm-day" class="form-control time-ampm">
+            <select id="ampm-from-day" class="form-control time-ampm">
                 <option value="AM">AM</option>
                 <option value="PM">PM</option>
             </select>
@@ -471,6 +471,9 @@
           for (var i = 0; i < repeaters.length; i++) {
               repeaters[i].style.display = 'none';
           }
+          $("#unit").val("2").change();
+          //$('#for-ever').prop('checked', false);
+          $('#for-ever').click();
           
           var repeaterClass=  $("#repeat").val() === '2' ? 'repeater-2' : 'repeater-1';          
           repeaters = document.getElementsByClassName(repeaterClass);
@@ -507,6 +510,10 @@
     });
     
     $("#schedule-items").val("S").change();
+    
+    $("#for-ever").click(function(){
+        $(this).is(':checked')?$("#datepicker-to").hide():$("#datepicker-to").show();
+    });
     
     var setTime = function () {
         var hr = document.getElementById('time-hr').value;
@@ -550,22 +557,26 @@
           var selectedDateTime = calcSelectedZoneDateTime();
           var myDt=selectedDateTime.getFullYear() + '/' + (selectedDateTime.getMonth() + 1) + '/' + selectedDateTime.getDate();
           $(".date-picker").datepicker('setDate', myDt);
-          document.getElementById("time-hr").value = parseInt(selectedDateTime.getHours()) > 0 && parseInt(selectedDateTime.getHours())!=12 ? (parseInt(selectedDateTime.getHours()) % 12) : 12;
-          document.getElementById("time-min").value = 5 * parseInt(selectedDateTime.getMinutes() / 5);
-          document.getElementById("ampm").value = parseInt(selectedDateTime.getHours()) >= 12 ? 'PM' : 'AM';          
           
+          var hh=parseInt(selectedDateTime.getHours()) > 0 && parseInt(selectedDateTime.getHours())!=12 ? (parseInt(selectedDateTime.getHours()) % 12) : 12;
+          var mm=5 * parseInt(selectedDateTime.getMinutes() / 5);
+          var ampm=parseInt(selectedDateTime.getHours()) >= 12 ? 'PM' : 'AM';
           
-          document.getElementById("time-hr-from-hm").value = document.getElementById("time-hr").value;
-          document.getElementById("time-min-from-hm").value = document.getElementById("time-min").value;
-          document.getElementById("ampm-from-hm").value = document.getElementById("ampm").value;
+          document.getElementById("time-hr").value = hh;//parseInt(selectedDateTime.getHours()) > 0 && parseInt(selectedDateTime.getHours())!=12 ? (parseInt(selectedDateTime.getHours()) % 12) : 12;
+          document.getElementById("time-min").value = mm;//5 * parseInt(selectedDateTime.getMinutes() / 5);
+          document.getElementById("ampm").value = ampm;//parseInt(selectedDateTime.getHours()) >= 12 ? 'PM' : 'AM';
+          
+          document.getElementById("time-hr-from-hm").value = hh;
+          document.getElementById("time-min-from-hm").value = mm;
+          document.getElementById("ampm-from-hm").value = ampm;
 
-          document.getElementById("time-hr-until-hm").value = document.getElementById("time-hr").value;
-          document.getElementById("time-min-until-hm").value = document.getElementById("time-min").value;
-          document.getElementById("ampm-until-hm").value = document.getElementById("ampm").value;
+          document.getElementById("time-hr-until-hm").value = hh;
+          document.getElementById("time-min-until-hm").value = mm;
+          document.getElementById("ampm-until-hm").value = ampm;
           
-          document.getElementById("time-hr-from-day").value = document.getElementById("time-hr").value;
-          document.getElementById("time-min-from-day").value = document.getElementById("time-min").value;
-          document.getElementById("ampm-from-day").value = document.getElementById("ampm").value;
+          document.getElementById("time-hr-from-day").value = hh;
+          document.getElementById("time-min-from-day").value = mm;
+          document.getElementById("ampm-from-day").value = ampm;
           
 
       };
