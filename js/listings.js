@@ -169,6 +169,22 @@ app.controller('listingsController', ['$scope','$http', '$rootScope', function($
         document.getElementById("renew-msg").style.visibility = (i > 0)?"visible":"hidden";
     };
     
+    $scope.getListItem=function(jobj){
+         
+        var listItem='{"UserID":"'+jobj.UserID+'"\n\
+               ,"ShopID":"'+jobj.ShopID+'"\n\
+               ,"ItemID":"'+jobj.ItemID+'"\n\
+               ,"Title":"'+jobj.Title+'"\n\
+               ,"Quantity":"'+jobj.Quantity+'"\n\
+               ,"Views":"'+jobj.Views+'"\n\
+               ,"Likes":"'+jobj.Likes+'"\n\
+               ,"Price":"'+jobj.Price+'"\n\
+               ,"LastUpdatedDate":"'+jobj.LastUpdatedDate+'"\n\
+               ,"ExpiryDate":"'+jobj.ExpiryDate+'"\n\
+               ,"ImageUrl":"'+jobj.ImageUrl+'"}';
+        return listItem;
+    };
+    
     $scope.schedule=function(){
 
     		if (validateSchedule()===false) {
@@ -179,37 +195,59 @@ app.controller('listingsController', ['$scope','$http', '$rootScope', function($
                     var rec = getRecurrence();
 	            var jsonStr = '{"renewals":[],'+rec+'}';
 	            var obj = JSON.parse(jsonStr);
-	            //alert(jsonStr);
-	            $rootScope.i=0;
-	            angular.forEach($scope.myListings, function(listing) {
-	                if(listing.selected){
-	                    
-	                    var jobj = (JSON.parse(JSON.stringify(listing)));
-                            //alert(jobj.ItemID);//(angular.element('#target-dateTime').html());
-	                    jobj.Title=encodeURIComponent(jobj.Title);
-	                    jobj.ScheduledDateTime=angular.element('#server-date').html()+ ' '+angular.element('#server-time').html();
-	                    jobj.ScheduledDate=angular.element('#server-date').html();
-	                    jobj.ScheduledTime=angular.element('#server-time').html();  
-	                    jobj.TargetDateTime=encodeURIComponent(angular.element('#target-dateTime').html());  
-	                    jobj.LocalDateTime=angular.element('#local-dateTime').html(); 
-	                    jobj.RenewalStatus=($scope.repeatOption==1?"S":$scope.repeatedTimes>1?"S":"F");   
-                            //alert(jobj.RenewalStatus);
-	                    obj['renewals'].push(jobj);
-	                    $rootScope.i++;
-	                }
-	            });
+                    $rootScope.i=0;
+                    if (document.getElementById('renew-type').value!=='REG'){
+                        var listItem=$scope.myListings[0];
+                        var jobj='{"UserID":"'+listItem.UserID+'"\n\
+                        ,"ShopID":"'+listItem.ShopID+'"\n\
+                        ,"ItemID":"'+'-999999'+'"\n\
+                         ,"Title":"'+document.getElementById('renew-type').value+'"\n\
+                        ,"Quantity":"0"\n\
+                        ,"Views":"0"\n\
+                        ,"Likes":"0"\n\
+                        ,"Price":"0"\n\
+                        ,"LastUpdatedDate":"1900-01-015 00:00:00"\n\
+                        ,"ExpiryDate":"1900-01-015 00:00:00"\n\
+                        ,"ImageUrl":"image-url"}';
+                        obj['renewals'].push(JSON.parse(jobj));
+                        $rootScope.i++;
+                    }
+                    else{
+                        //alert(jsonStr);
+                        //$rootScope.i=0;
+                        angular.forEach($scope.myListings, function(listing) {
+                            if(listing.selected){
+                                /*
+                                var jobj = (JSON.parse(JSON.stringify(listing)));
+                                //alert(jobj.ItemID);//(angular.element('#target-dateTime').html());
+                                jobj.Title=encodeURIComponent(jobj.Title);
+                                jobj.ScheduledDateTime=angular.element('#server-date').html()+ ' '+angular.element('#server-time').html();
+                                jobj.ScheduledDate=angular.element('#server-date').html();
+                                jobj.ScheduledTime=angular.element('#server-time').html();  
+                                jobj.TargetDateTime=encodeURIComponent(angular.element('#target-dateTime').html());  
+                                jobj.LocalDateTime=angular.element('#local-dateTime').html(); 
+                                jobj.RenewalStatus=($scope.repeatOption==1?"S":$scope.repeatedTimes>1?"S":"F");   
+                                //alert(jobj.RenewalStatus);
+                                */
+                               var jobj=$scope.getListItem(listing);
+
+                                obj['renewals'].push(JSON.parse(jobj));
+                                $rootScope.i++;
+                            }
+                    });}
+                    
                     if($rootScope.i===0){
                         alert("No listings were selected for renewal.");
                     }
 	            else if($rootScope.i>0){
 	                jsonStr = JSON.stringify(obj);	            
 	                var uri='models/add_renewals.php?listing='+jsonStr;
-	                //alert(uri);
+	                alert(uri);
                         var status="";
 	                $http.get(uri).then(function (response) {
                                 status=response.data.status;
 	                	if (status==='expired'){
-                                    alert('Your auto renewal service expires on "'+response.data.expiry_date+'"\r\nPlease go to SETTINGS to extend your service.\r\nThank you.');
+                                    alert('Your AUTO RENEWAL service expires on "'+response.data.expiry_date+'"\r\nPlease go to SETTINGS to extend your service.\r\nThank you.');
                                     $scope.reset();
 		                }
                                 else{
@@ -222,7 +260,9 @@ app.controller('listingsController', ['$scope','$http', '$rootScope', function($
 	            }
 	        };   
     	}
-        
+    
+    
+    
     angular.element(document).ready(function () {
         // Load products from server
         if(!$rootScope.myListings || $rootScope.myListings===null || $rootScope.myListings===undefined ){

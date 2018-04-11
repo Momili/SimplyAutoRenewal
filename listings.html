@@ -113,13 +113,13 @@
         </select>
         </li>
         <li class="align">
-        <select class="form-control input-group col-xs-6" id="schedule-items">
-        <option value="S">selected {{itemsCount}} item(s) above</option>
-        <option value="R">random items</option>
-        <option value="O">oldest items</option>
-        <option value="N">newest items</option>
-        <option value="L">lowest price items</option>
-        <option value="H">highest price items</option>        
+        <select class="form-control input-group col-xs-6" id="renew-type">
+        <option value="REG" >selected {{itemsCount}} item(s) above</option>
+        <option value="RND">random items</option>
+        <option value="OLD">oldest items</option>
+        <option value="NEW">newest items</option>
+        <!--option value="LOW">lowest price items</option>
+        <option value="HIG">highest price items</option-->        
         </select>
         </li>
         <li class="align"><span class="help-block">for renewal</span></li>   
@@ -184,9 +184,9 @@
             </li>
             <li class="align repeater repeater repeater-2">
                 <select class="form-control" id="unit">                    
-                    <option value="1" title="Minutes">minute(s)</option>   
-                    <option value="2" title="Hours" >hour(s)</option>
-                    <option value="3" title="Days">day(s)</option>                    
+                    <option value="m" title="Minutes">minute(s)</option>   
+                    <option value="h" title="Hours" >hour(s)</option>
+                    <option value="d" title="Days">day(s)</option>                    
                 </select>
             </li>             
          </ol>
@@ -244,10 +244,10 @@
         <ol class="align">
            <li class="align"><span class="help-block" style="width:80px;">Starting</span></li>
            <li class="align"><input type="text" class="form-control date-picker" id="datepicker-from" placeholder="Start Date"></li>
-           <li class="align"><span class="help-block">ending</span></li>
+           <li class="align"><span class="help-block">Ending</span></li>
            <li class="align"><input type="text" class="form-control date-picker" id="datepicker-to" placeholder="End Date"></li>
-           <li class="align"><input type="checkbox" id="for-ever" name="for-ever" class="form-control" ></li>
-           <li class="align" ><span class="help-block" data-toggle="tooltip" title="When I cancel this renewal." >NEVER!</span></li>
+           <li class="align"><input type="checkbox" id="for-ever" name="for-ever" title="NEVER!" ></li>
+           <li class="align" ><span class="help-block" data-toggle="tooltip" title="When I cancel this renewal." >NEVER!!!</span></li>
         </ol>   
     </div>
     
@@ -339,7 +339,7 @@
                 <option value="PM">PM</option>
             </select>
         </li>  
-        <li class="align" ><span class="help-block">until</span></li>
+        <li class="align" ><span class="help-block">Until</span></li>
             <li class="align">
                 <select id="time-hr-until-hm" name="hour-until-hm" class="form-control time-hour">
                 <option value="1">01</option>
@@ -386,13 +386,13 @@
     <div class="repeater repeater-2 unit-time unit-1">
         <ol class="align">
         <li class="align"><span class="help-block" style="width:110px;">Repeat on days</span></li>
-        <li class="align"><span class="help-block" title="Sunday" style="padding-right:7px;" ><input id="dow0" name="SU" checked="checked" title="Sunday" type="checkbox">&nbsp;Sun&nbsp;</span></li>
-        <li class="align"><span class="help-block" title="Monday" style="padding-right:7px;" ><input id="dow1" name="MO" checked="checked" title="Monday" type="checkbox">&nbsp;Mon</span></li>
-        <li class="align"><span class="help-block" title="Tuesday" style="padding-right:7px;"><input id="dow2" name="TU" checked="checked" title="Tuesday" type="checkbox">&nbsp;Tue</span></li>
-        <li class="align"><span class="help-block" title="Wednesday" style="padding-right:7px;"><input id="dow3" name="WE" checked="checked" title="Wednesday" type="checkbox">&nbsp;Wed</span></li>
-        <li class="align"><span class="help-block" title="Thursday" style="padding-right:7px;"><input id="dow4" name="TH" checked="checked" title="Thursday" type="checkbox">&nbsp;Thu</span></li>
-        <li class="align"><span class="help-block" title="Friday" style="padding-right:7px;"><input id="dow5" name="FR" checked="checked" title="Friday" type="checkbox">&nbsp;Fri</span></li>
-        <li class="align"><span class="help-block" title="Saturday" style="padding-right:7px;"><input id="dow6" name="SA" checked="checked" title="Saturday" type="checkbox">&nbsp;Sat</span></li>
+        <li class="align"><span class="help-block" title="Sunday" style="padding-right:7px;" ><input id="sun" name="SU" checked="checked" title="Sunday" type="checkbox">&nbsp;Sun&nbsp;</span></li>
+        <li class="align"><span class="help-block" title="Monday" style="padding-right:7px;" ><input id="mon" name="MO" checked="checked" title="Monday" type="checkbox">&nbsp;Mon</span></li>
+        <li class="align"><span class="help-block" title="Tuesday" style="padding-right:7px;"><input id="tue" name="TU" checked="checked" title="Tuesday" type="checkbox">&nbsp;Tue</span></li>
+        <li class="align"><span class="help-block" title="Wednesday" style="padding-right:7px;"><input id="wed" name="WE" checked="checked" title="Wednesday" type="checkbox">&nbsp;Wed</span></li>
+        <li class="align"><span class="help-block" title="Thursday" style="padding-right:7px;"><input id="thu" name="TH" checked="checked" title="Thursday" type="checkbox">&nbsp;Thu</span></li>
+        <li class="align"><span class="help-block" title="Friday" style="padding-right:7px;"><input id="fri" name="FR" checked="checked" title="Friday" type="checkbox">&nbsp;Fri</span></li>
+        <li class="align"><span class="help-block" title="Saturday" style="padding-right:7px;"><input id="sat" name="SA" checked="checked" title="Saturday" type="checkbox">&nbsp;Sat</span></li>
         </ol>
     </div>
  
@@ -418,11 +418,7 @@
 </div>           
 
 <script type="text/javascript">
-    
-    $(document).ready(function() {
-        setTimeout(function(){ setSelectedTimeZone(); }, 300);              
-    });
-    
+            
     $(function(){
         var defTimeZoneVal=readCookie('sar-tz');
         document.getElementById('zone-list').value = (!defTimeZoneVal)?new Date().getTimezoneOffset()/60*(-1):defTimeZoneVal;
@@ -471,9 +467,9 @@
           for (var i = 0; i < repeaters.length; i++) {
               repeaters[i].style.display = 'none';
           }
-          $("#unit").val("2").change();
+          $("#unit").val("h").change();
           //$('#for-ever').prop('checked', false);
-          $('#for-ever').click();
+          //$('#for-ever').click();
           
           var repeaterClass=  $("#repeat").val() === '2' ? 'repeater-2' : 'repeater-1';          
           repeaters = document.getElementsByClassName(repeaterClass);
@@ -482,8 +478,6 @@
           }        
     });
     
-    $("#repeat").val("1").change();
-    
     $("#unit").change(function () {
         if($("#repeat").val() === '2'){
           //turn off all
@@ -491,26 +485,22 @@
           for (var i = 0; i < repeaters.length; i++) {
               repeaters[i].style.display = 'none';
           }
-          var repeaterClass=  $("#unit").val() > 2 ? 'unit-2' : 'unit-1'; 
+          var repeaterClass=  $("#unit").val() === 'd' ? 'unit-2' : 'unit-1'; 
           repeaters = document.getElementsByClassName(repeaterClass);
           for (var i = 0; i < repeaters.length; i++) {
               repeaters[i].style.display = 'inline-block';
           }        
       }
     });
-    
-    $("#unit").val("2").change();
-    
-    $("#schedule-items").change(function () {
+        
+    $("#renew-type").change(function () {
           repeaters = document.getElementsByClassName('selection-pnl');
           for (var i = 0; i < repeaters.length; i++) {
-              repeaters[i].style.display = $("#schedule-items").val() === 'S' ?'block':'none';
+              repeaters[i].style.display = $("#renew-type").val() === 'REG' ?'block':'none';
           }  
-          if($("#schedule-items").val() === 'S'){$("#schedule-times").hide();}else{$("#schedule-times").show();}
+          if($("#renew-type").val() === 'REG'){$("#schedule-times").hide();}else{$("#schedule-times").show();}
     });
-    
-    $("#schedule-items").val("S").change();
-    
+            
     $("#for-ever").click(function(){
         $(this).is(':checked')?$("#datepicker-to").hide():$("#datepicker-to").show();
     });
@@ -646,16 +636,44 @@
           return (scheduleDateTime > timeZoneDatetime);         
       };   
      
-    var getRecurrence  = function(){
-        var rec ='"recurrence":[{"repeat":"'+ document.getElementById('repeat').value+'"\n\
-                , "frequency":"'+ document.getElementById('frequency').value+'"\n\
-                , "unit":"'+ document.getElementById('unit').value+'"\n\
-                , "times":"'+ document.getElementById('times').value+'"}]';
+    var getRecurrence  = function(){        
+        var rec ='"recurrence":[{"repeat":"'+document.getElementById('repeat').value+'"\n\
+                , "frequency":"'+document.getElementById('frequency').value+'"\n\
+                , "unit":"'+document.getElementById('unit').value+'"\n\
+                , "renewType":"'+document.getElementById('renew-type').value+'"\n\
+                , "scheduledDateTime":"'+document.getElementById('server-date').innerHTML+' '+document.getElementById('server-time').innerHTML+'"\n\
+                , "scheduledDate":"'+document.getElementById('server-date').innerHTML+'"\n\
+                , "scheduledTime":"'+document.getElementById('server-time').innerHTML+'"\n\
+                , "targetDateTime":"'+document.getElementById('target-dateTime').innerHTML+'"\n\
+                , "localDateTime":"'+document.getElementById('local-dateTime').innerHTML+'"\n\
+                , "startDate":"'+document.getElementById('server-date').innerHTML+'"\n\
+                , "endDate":"'+document.getElementById('server-date').innerHTML+'"\n\
+                , "startTime":"'+document.getElementById('server-time').innerHTML+'"\n\
+                , "endTime":"'+document.getElementById('server-time').innerHTML+'"\n\
+                , "numOfItems":"'+document.getElementById('schedule-times').value+'"\n\
+                , "repeat":"'+document.getElementById('repeat').value+'"\n\
+                , "forEver":"'+(document.getElementById('for-ever').checked?'Y':'N')+'"\n\
+                , "sun":"'+(document.getElementById('sun').checked?'Y':'N')+'"\n\
+                , "mon":"'+(document.getElementById('mon').checked?'Y':'N')+'"\n\
+                , "tue":"'+(document.getElementById('tue').checked?'Y':'N')+'"\n\
+                , "wed":"'+(document.getElementById('wed').checked?'Y':'N')+'"\n\
+                , "thu":"'+(document.getElementById('thu').checked?'Y':'N')+'"\n\
+                , "fri":"'+(document.getElementById('fri').checked?'Y':'N')+'"\n\
+                , "sat":"'+(document.getElementById('sat').checked?'Y':'N')+'"}]';
         return rec;        
       };    
     
     reset=function(){
         $("#repeat").val("1").change();
     };
+    
+    $(document).ready(function() {
+        setTimeout(function(){ setSelectedTimeZone(); }, 300); 
+        
+        $("#renew-type").val('REG').change();        
+        $("#repeat").val('1').change();
+        $("#unit").val('h').change();
+    });
+    
 </script>
    
