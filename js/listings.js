@@ -241,7 +241,7 @@ app.controller('listingsController', ['$scope','$http', '$rootScope', function($
                     }
 	            else if($rootScope.i>0){
 	                jsonStr = JSON.stringify(obj);	            
-	                var uri='models/add_renewals.php?listing='+jsonStr;
+	                var uri='models/add_renewal2.php?listing='+jsonStr;
 	                alert(uri);
                         var status="";
 	                $http.get(uri).then(function (response) {

@@ -33,15 +33,29 @@ $json= $_GET['listing'];
 //$json='{"renewals":[{"ItemID":"11","selected":true,"Title":"Beautiful ring","ImageUrl":"https://img0.etsystatic.com/000/0/5486190/il_75x75.254911376.jpg","LastUpdatedDate":"2016-01-17","ScheduledDate":"2016-04-10","ScheduledTime":"11:35:00","RenewalStatus":"A","ShopID":"1","$$hashKey":"object:4"},{"ItemID":"22","selected":true,"Title":"Very nice ring","ImageUrl":"https://img0.etsystatic.com/018/0/5486190/il_75x75.577441034_5ady.jpg","LastUpdatedDate":"2015-12-28","ScheduledDate":"2016-04-10","ScheduledTime":"11:35:00","RenewalStatus":"A","ShopID":"1","$$hashKey":"object:5"},{"ItemID":"33","selected":true,"Title":"Fantastic earring","ImageUrl":"https://img1.etsystatic.com/054/0/5486190/il_75x75.726412499_mid3.jpg","LastUpdatedDate":"2015-12-28","ScheduledDate":"2016-04-10","ScheduledTime":"11:35:00","RenewalStatus":"A","ShopID":"1","$$hashKey":"object:6"}]}';
 
 $data = json_decode($json, TRUE);
+echo 'userId-'.$userId;
+echo 'shop id - '.json_encode($data['renewals'][0]['ShopID']);
 
 //calc recurrence 
 $repeat = $data['recurrence'][0]['repeat'];
-$schedule_date_time = new DateTime($data['renewals'][0]["ScheduledDateTime"]);
-$target_date_time = new DateTime($data['renewals'][0]["TargetDateTime"]);
-$local_date_time = new DateTime($data['renewals'][0]["LocalDateTime"]);
+$schedule_date_time = new DateTime($data['recurrence'][0]['scheduledDateTime']);
+$target_date_time = new DateTime($data['recurrence'][0]['targetDateTime']);
+$local_date_time = new DateTime($data['recurrence'][0]['localDateTime']);
+
+if($data['recurrence'][0]['repeat']==='1'){
+    $renewal_status='S';
+}else if($data['recurrence'][0]['forEver']==='Y'){
+    $renewal_status='F';
+}
+else{
+    $renewal_status='R';
+}
+
+echo 'repeat-'.$repeat;
+echo 'schedule_date_time-'.$data['recurrence'][0]['scheduledDateTime'];
 
 //repeat number of times
-if ($repeat==2){
+if ($repeat==3){
     $frequency= intval($data['recurrence'][0]['frequency']);
     $unit=intval($data['recurrence'][0]['unit']);   
     $times= $data['recurrence'][0]['times'];
@@ -90,14 +104,12 @@ if ($repeat==2){
         echo json_encode(array( 'status'=> 'OK','expiry_date' => $expiry_date->format('Y-m-d') ));
     }
     
-    add_renewal($renewal, $data, $userId, $shopId, $schedule_date_time, $target_date_time, $local_date_time,0,0);
+    add_renewal($renewal, $data, $userId, $shopId, $schedule_date_time, $target_date_time, $local_date_time,$renewal_status);
 }
 
 
 
-function add_renewal($renewal, $data, $userId, $shopId, $schedule_date_time, $target_date_time, $local_date_time, $unit, $frequency
-        , $renew_type, $start_date, $end_date, $start_time, $end_time, $num_of_items
-        , $sun, $mon, $tue, $wed, $thu, $fri, $sat){
+function add_renewal($renewal, $data, $userId, $shopId, $schedule_date_time, $target_date_time, $local_date_time,$renewal_status){
     
     for($i=0; $i<count($data['renewals']); $i++) {    
         //echo '*****'.$data['renewals'][$i]["TargetDateTime"].'******';//$data['renewals'][$i]["UserID"];    
@@ -111,8 +123,8 @@ function add_renewal($renewal, $data, $userId, $shopId, $schedule_date_time, $ta
         $renewal->Likes = $data['renewals'][$i]["Likes"];//$data->ImageUrl;
         $renewal->LastUpdatedDate = $data['renewals'][$i]["LastUpdatedDate"];//$data->LastUpdatedDate;
         $renewal->ExpiryDate = $data['renewals'][$i]["ExpiryDate"];//$data->LastUpdatedDate;
-        $renewal->RenewalStatus = $data['renewals'][$i]["RenewalStatus"];//$data->RenewalStatus;
         
+        $renewal->RenewalStatus = $renewal_status;
         $renewal->ScheduledDateTime = $schedule_date_time->format('Y-m-d H:i:s');//$data['renewals'][$i]["ScheduledDateTime"];//$data->ScheduledDate;
         $renewal->ScheduledDate = $schedule_date_time->format('Y-m-d');//$data['renewals'][$i]["ScheduledDate"];//$data->ScheduledDate;
         $renewal->ScheduledTime = $schedule_date_time->format('H:i:s');//$data['renewals'][$i]["ScheduledTime"];//$data->ScheduledTime;
@@ -120,21 +132,21 @@ function add_renewal($renewal, $data, $userId, $shopId, $schedule_date_time, $ta
         $renewal->TargetDateTime = $target_date_time->format('Y-m-d H:i:s');//$data['renewals'][$i]["TargetDateTime"];
         $renewal->LocalDateTime = $local_date_time->format('Y-m-d H:i:s');//$data['renewals'][$i]["LocalDateTime"];
         
-        $renewal->Unit = $unit;
-        $renewal->Frequency = $frequency;
-        $renewal->RenewType = $renew_type;
-        $renewal->StartDate = $start_date;
-        $renewal->EndDate = $end_date;
-        $renewal->StartTime = $start_time;
-        $renewal->EndTime =  $end_time;
-        $renewal->NumberOfItems = $num_of_items;
-        $renewal->Sun= $sun;
-        $renewal->Mon= $mon;
-        $renewal->Tue = $tue;
-        $renewal->Wed = $wed;
-        $renewal->Thu = $thu;
-        $renewal->Fri = $fri;
-        $renewal->Sat = $sat;
+        $renewal->Unit = $data['recurrence'][0]["unit"];
+        $renewal->Frequency = $data['recurrence'][0]["frequency"];
+        $renewal->RenewType = $data['recurrence'][0]["renewType"];
+        $renewal->StartDate = $data['recurrence'][0]["startDate"];
+        $renewal->EndDate = $data['recurrence'][0]["endDate"];
+        $renewal->StartTime = $data['recurrence'][0]["startTime"];
+        $renewal->EndTime =  $data['recurrence'][0]["endTime"];
+        $renewal->NumberOfItems = $data['recurrence'][0]["numOfItems"];
+        $renewal->Sun= $data['recurrence'][0]["sun"];
+        $renewal->Mon= $data['recurrence'][0]["mon"];
+        $renewal->Tue = $data['recurrence'][0]["tue"];
+        $renewal->Wed = $data['recurrence'][0]["wed"];
+        $renewal->Thu = $data['recurrence'][0]["thu"];
+        $renewal->Fri = $data['recurrence'][0]["fri"];
+        $renewal->Sat = $data['recurrence'][0]["sat"];
         
         // create the renewal
         $renewal->createNew();

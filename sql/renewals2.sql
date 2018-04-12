@@ -38,7 +38,7 @@ CREATE TABLE `renewals2` (
  `EndTime` time NOT NULL,
  `NumberOfItems` smallint,
  `Sun` varchar(1),
- `Mon` varchar(1)
+ `Mon` varchar(1),
  `Tue` varchar(1),
  `Wed` varchar(1),
  `Thu` varchar(1),
