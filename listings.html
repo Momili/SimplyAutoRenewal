@@ -247,7 +247,7 @@
            <li class="align"><span class="help-block">Ending</span></li>
            <li class="align"><input type="text" class="form-control date-picker" id="datepicker-to" placeholder="End Date"></li>
            <li class="align"><input type="checkbox" id="for-ever" name="for-ever" title="NEVER!" ></li>
-           <li class="align" ><span class="help-block" data-toggle="tooltip" title="When I cancel this renewal." >NEVER!!!</span></li>
+           <li class="align" ><span class="help-block" data-toggle="tooltip" title="When I cancel." >NEVER!!!</span></li>
         </ol>   
     </div>
     
@@ -412,6 +412,11 @@
         <span class="label label-info" id="server-time"></span>
         <span class="label label-info" id="local-dateTime"></span>
         <span class="label label-info" id="target-dateTime"></span>
+        
+        <span class="label label-info" id="server-date-from"></span>
+        <span class="label label-info" id="server-date-to"></span>        
+        <span class="label label-info" id="server-time-from"></span>
+        <span class="label label-info" id="server-time-to"></span>        
     </div>
     
     </div>
@@ -459,7 +464,38 @@
             document.getElementById('server-time').innerHTML=bhDate.getHours()+':'+(bhDate.getMinutes()<10?'0':'') +bhDate.getMinutes()+':'+(bhDate.getSeconds()<10?'0':'')+bhDate.getSeconds();
             document.getElementById('local-dateTime').innerHTML=localDate.toDateString()+' '+localDate.getHours()+':'+(localDate.getMinutes()<10?'0':'') +localDate.getMinutes()+':'+(localDate.getSeconds()<10?'0':'')+localDate.getSeconds();
             document.getElementById('target-dateTime').innerHTML=tzDate.toDateString()+' '+tzDate.getHours()+':'+(tzDate.getMinutes()<10?'0':'') +tzDate.getMinutes()+':'+(tzDate.getSeconds()<10?'0':'')+tzDate.getSeconds();//+' (ETC/GMT '+(tz>=0?'\+':'')+tz.toString()+')';
-     };                       
+     };
+     
+     var setTimeZone2 = function(){
+            var el = document.getElementById("zone-list");
+            var tz = el.options[el.selectedIndex].value;
+            createCookie('sar-tz',tz,1000);
+            
+            //from time zone
+            var dt_from = document.getElementById('datepicker-from').value;
+            var tm_from = setTime(1);//document.getElementById('timepicker').value;
+            var tzDate = new Date(Date.parse(dt +' '+tm,"yy/mm/dd H:i:s"));
+            
+            //utc
+            tz = parseInt(tz) + daylightSavingTimeOffset(tz); 
+            var utc = tzDate.getTime() + (parseInt(tz) * 60 * 60000 *(-1));
+
+            //local date
+            dt = new Date();
+            var localOffset= dt.getTimezoneOffset() * 60000 * (-1);  
+            var localDate = new Date(utc + localOffset);
+            
+            //server date - America/Denver UTC-7h
+            var stz = parseInt(-7) + daylightSavingTimeOffset(-7); 
+            var bhOffset= (stz *60) * 60000;  
+            //var bhOffset= (7 *60) * 60000 * (-1);  
+            var bhDate = new Date(utc + bhOffset);  
+            
+            document.getElementById('server-date').innerHTML=bhDate.getFullYear()+'/'+(bhDate.getMonth()+1)+'/'+bhDate.getDate();
+            document.getElementById('server-time').innerHTML=bhDate.getHours()+':'+(bhDate.getMinutes()<10?'0':'') +bhDate.getMinutes()+':'+(bhDate.getSeconds()<10?'0':'')+bhDate.getSeconds();
+            document.getElementById('local-dateTime').innerHTML=localDate.toDateString()+' '+localDate.getHours()+':'+(localDate.getMinutes()<10?'0':'') +localDate.getMinutes()+':'+(localDate.getSeconds()<10?'0':'')+localDate.getSeconds();
+            document.getElementById('target-dateTime').innerHTML=tzDate.toDateString()+' '+tzDate.getHours()+':'+(tzDate.getMinutes()<10?'0':'') +tzDate.getMinutes()+':'+(tzDate.getSeconds()<10?'0':'')+tzDate.getSeconds();//+' (ETC/GMT '+(tz>=0?'\+':'')+tz.toString()+')';
+     };               
     
     $("#repeat").change(function () {
           //turn off all
@@ -509,6 +545,43 @@
         var hr = document.getElementById('time-hr').value;
         var min = document.getElementById('time-min').value;
         var ampm = document.getElementById('ampm').value;
+        hr = ampm ==='PM'?(hr % 12)+12:hr%12;
+        return hr+':'+min+':00';
+        //$("#currTime").html(hr+':'+min+':00');//new Date(0, 0, 0, hr, min, 0).toTimeString());
+    };
+    
+    var setTime2 = function (timeType) {
+        var time_hr;
+        var time_min;
+        var ampm;        
+        
+        switch (timeType) {
+            case 0:
+                time_hr='time-hr';
+                time_min='time-min';
+                ampm='ampm';
+                break;
+            case 1: 
+                time_hr='time-hr-from-hm';
+                time_min='time-min-from-hr';
+                ampm='ampm-from-hm';
+                break;
+            case 2:
+                time_hr='time-hr-until-hm';
+                time_min='time-min-until-hr';
+                ampm='ampm-until-hm';
+                break;
+            case 3:
+                time_hr='time-hr-from-day';
+                time_min='time-min-from-day';
+                ampm='ampm-from-day';
+                break;
+        }
+        
+        var hr = document.getElementById(time_hr).value;
+        var min = document.getElementById(time_min).value;
+        var ampm = document.getElementById(ampm).value;
+        
         hr = ampm ==='PM'?(hr % 12)+12:hr%12;
         return hr+':'+min+':00';
         //$("#currTime").html(hr+':'+min+':00');//new Date(0, 0, 0, hr, min, 0).toTimeString());

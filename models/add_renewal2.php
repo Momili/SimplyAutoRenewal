@@ -33,8 +33,8 @@ $json= $_GET['listing'];
 //$json='{"renewals":[{"ItemID":"11","selected":true,"Title":"Beautiful ring","ImageUrl":"https://img0.etsystatic.com/000/0/5486190/il_75x75.254911376.jpg","LastUpdatedDate":"2016-01-17","ScheduledDate":"2016-04-10","ScheduledTime":"11:35:00","RenewalStatus":"A","ShopID":"1","$$hashKey":"object:4"},{"ItemID":"22","selected":true,"Title":"Very nice ring","ImageUrl":"https://img0.etsystatic.com/018/0/5486190/il_75x75.577441034_5ady.jpg","LastUpdatedDate":"2015-12-28","ScheduledDate":"2016-04-10","ScheduledTime":"11:35:00","RenewalStatus":"A","ShopID":"1","$$hashKey":"object:5"},{"ItemID":"33","selected":true,"Title":"Fantastic earring","ImageUrl":"https://img1.etsystatic.com/054/0/5486190/il_75x75.726412499_mid3.jpg","LastUpdatedDate":"2015-12-28","ScheduledDate":"2016-04-10","ScheduledTime":"11:35:00","RenewalStatus":"A","ShopID":"1","$$hashKey":"object:6"}]}';
 
 $data = json_decode($json, TRUE);
-echo 'userId-'.$userId;
-echo 'shop id - '.json_encode($data['renewals'][0]['ShopID']);
+//echo 'userId-'.$userId;
+//echo 'shop id - '.json_encode($data['renewals'][0]['ShopID']);
 
 //calc recurrence 
 $repeat = $data['recurrence'][0]['repeat'];
