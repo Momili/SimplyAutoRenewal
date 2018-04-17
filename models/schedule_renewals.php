@@ -135,7 +135,7 @@
             print($e->getMessage());
             print(print_r($oauth->getLastResponse(), true));
             print(print_r($oauth->getLastResponseInfo(), true));
-            exit;
+            //exit;
         }
     }   
     

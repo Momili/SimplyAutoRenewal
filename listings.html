@@ -435,43 +435,53 @@
     });
         
     var setTimeZone = function(){
-            var el = document.getElementById("zone-list");
-            var tz = el.options[el.selectedIndex].value;
-            createCookie('sar-tz',tz,1000);
-            //time zone
-            var dt = document.getElementById('datepicker').value;
-            var tm = setTime();//document.getElementById('timepicker').value;
-            var tzDate = new Date(Date.parse(dt +' '+tm,"yy/mm/dd H:i:s"));
             
-            //utc
-            tz = parseInt(tz) + daylightSavingTimeOffset(tz); 
-            var utc = tzDate.getTime() + (parseInt(tz) * 60 * 60000 *(-1));
+            var repeat=document.getElementById('repeat').value;
+            
+            if (repeat=='2'){
+                setTimeZone_repeat();
+            }else{
+                var el = document.getElementById("zone-list");
+                var tz = el.options[el.selectedIndex].value;
+                createCookie('sar-tz',tz,1000);
+                //time zone
+                var dt = document.getElementById('datepicker').value;
+                var tm = setTime(0);//document.getElementById('timepicker').value;
+                var tzDate = new Date(Date.parse(dt +' '+tm,"yy/mm/dd H:i:s"));
 
-            //local date
-            dt = new Date();
-            var localOffset= dt.getTimezoneOffset() * 60000 * (-1);  
-            var localDate = new Date(utc + localOffset);
-            
-            //server date - America/Denver UTC-7h
-            var stz = parseInt(-7) + daylightSavingTimeOffset(-7); 
-            var bhOffset= (stz *60) * 60000;  
-            //var bhOffset= (7 *60) * 60000 * (-1);  
-            var bhDate = new Date(utc + bhOffset);  
-            
-            document.getElementById('server-date').innerHTML=bhDate.getFullYear()+'/'+(bhDate.getMonth()+1)+'/'+bhDate.getDate();
-            document.getElementById('server-time').innerHTML=bhDate.getHours()+':'+(bhDate.getMinutes()<10?'0':'') +bhDate.getMinutes()+':'+(bhDate.getSeconds()<10?'0':'')+bhDate.getSeconds();
-            document.getElementById('local-dateTime').innerHTML=localDate.toDateString()+' '+localDate.getHours()+':'+(localDate.getMinutes()<10?'0':'') +localDate.getMinutes()+':'+(localDate.getSeconds()<10?'0':'')+localDate.getSeconds();
-            document.getElementById('target-dateTime').innerHTML=tzDate.toDateString()+' '+tzDate.getHours()+':'+(tzDate.getMinutes()<10?'0':'') +tzDate.getMinutes()+':'+(tzDate.getSeconds()<10?'0':'')+tzDate.getSeconds();//+' (ETC/GMT '+(tz>=0?'\+':'')+tz.toString()+')';
+                //utc
+                tz = parseInt(tz) + daylightSavingTimeOffset(tz); 
+                var utc = tzDate.getTime() + (parseInt(tz) * 60 * 60000 *(-1));
+
+                //local date
+                dt = new Date();
+                var localOffset= dt.getTimezoneOffset() * 60000 * (-1);  
+                var localDate = new Date(utc + localOffset);
+
+                //server date - America/Denver UTC-7h
+                var stz = parseInt(-7) + daylightSavingTimeOffset(-7); 
+                var bhOffset= (stz *60) * 60000;  
+                //var bhOffset= (7 *60) * 60000 * (-1);  
+                var bhDate = new Date(utc + bhOffset);  
+
+                document.getElementById('server-date').innerHTML=bhDate.getFullYear()+'/'+(bhDate.getMonth()+1)+'/'+bhDate.getDate();
+                document.getElementById('server-time').innerHTML=bhDate.getHours()+':'+(bhDate.getMinutes()<10?'0':'') +bhDate.getMinutes()+':'+(bhDate.getSeconds()<10?'0':'')+bhDate.getSeconds();
+                document.getElementById('local-dateTime').innerHTML=localDate.toDateString()+' '+localDate.getHours()+':'+(localDate.getMinutes()<10?'0':'') +localDate.getMinutes()+':'+(localDate.getSeconds()<10?'0':'')+localDate.getSeconds();
+                document.getElementById('target-dateTime').innerHTML=tzDate.toDateString()+' '+tzDate.getHours()+':'+(tzDate.getMinutes()<10?'0':'') +tzDate.getMinutes()+':'+(tzDate.getSeconds()<10?'0':'')+tzDate.getSeconds();//+' (ETC/GMT '+(tz>=0?'\+':'')+tz.toString()+')';
+        }
      };
      
-     var setTimeZone2 = function(unit){
+     var setTimeZone_repeat = function(){            
+            
+            var unit=document.getElementById('unit').value;
+            
             var el = document.getElementById("zone-list");
             var tz = el.options[el.selectedIndex].value;
             createCookie('sar-tz',tz,1000);
             
             //from time zone
             var dt_from = document.getElementById('datepicker-from').value;
-            var tm_from = setTime2(unit==='d'?3:1);//document.getElementById('timepicker').value;
+            var tm_from = setTime(unit==='d'?3:1);//document.getElementById('timepicker').value;
             var tzDate = new Date(Date.parse(dt_from +' '+tm_from,"yy/mm/dd H:i:s"));
             
             //utc
@@ -496,7 +506,7 @@
             
             //until time zone
             var dt_until = document.getElementById('datepicker-to').value;
-            var tm_until = setTime2(unit==='d'?4:2);//document.getElementById('timepicker').value;
+            var tm_until = setTime(unit==='d'?4:2);//document.getElementById('timepicker').value;
             var tzDateUntil = new Date(Date.parse(dt_until +' '+tm_until,"yy/mm/dd H:i:s"));
             
             //utc
@@ -554,7 +564,7 @@
         $(this).is(':checked')?$("#datepicker-to").hide():$("#datepicker-to").show();
     });
     
-    var setTime = function () {
+    var setTime_old = function () {
         var hr = document.getElementById('time-hr').value;
         var min = document.getElementById('time-min').value;
         var ampm = document.getElementById('ampm').value;
@@ -563,7 +573,7 @@
         //$("#currTime").html(hr+':'+min+':00');//new Date(0, 0, 0, hr, min, 0).toTimeString());
     };
     
-    var setTime2 = function (timeType) {
+    var setTime = function (timeType) {
         var time_hr;
         var time_min;
         var ampm;        
@@ -574,17 +584,22 @@
                 time_min='time-min';
                 ampm='ampm';
                 break;
-            case 1: //unit=h/m
+            case 1: //unit=h/m from
                 time_hr='time-hr-from-hm';
                 time_min='time-min-from-hr';
                 ampm='ampm-from-hm';
                 break;
-            case 2: //unit=h/m
+            case 2: //unit=h/m until
                 time_hr='time-hr-until-hm';
                 time_min='time-min-until-hr';
                 ampm='ampm-until-hm';
                 break;
-            case 3://unit=d
+            case 3://unit=d from
+                time_hr='time-hr-from-day';
+                time_min='time-min-from-day';
+                ampm='ampm-from-day';
+                break;
+            case 4://unit=d until
                 time_hr='time-hr-from-day';
                 time_min='time-min-from-day';
                 ampm='ampm-from-day';
@@ -733,9 +748,9 @@
                 , "targetDateTime":"'+document.getElementById('target-dateTime').innerHTML+'"\n\
                 , "localDateTime":"'+document.getElementById('local-dateTime').innerHTML+'"\n\
                 , "startDate":"'+document.getElementById('server-date').innerHTML+'"\n\
-                , "endDate":"'+document.getElementById('server-date').innerHTML+'"\n\
+                , "endDate":"'+document.getElementById('server-date-to').innerHTML+'"\n\
                 , "startTime":"'+document.getElementById('server-time').innerHTML+'"\n\
-                , "endTime":"'+document.getElementById('server-time').innerHTML+'"\n\
+                , "endTime":"'+document.getElementById('server-time-to').innerHTML+'"\n\
                 , "numOfItems":"'+document.getElementById('schedule-times').value+'"\n\
                 , "repeat":"'+document.getElementById('repeat').value+'"\n\
                 , "forEver":"'+(document.getElementById('for-ever').checked?'Y':'N')+'"\n\
