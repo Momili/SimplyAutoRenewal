@@ -510,7 +510,7 @@
             var tzDateUntil = new Date(Date.parse(dt_until +' '+tm_until,"yy/mm/dd H:i:s"));
             
             //utc
-            tz = parseInt(tz) + daylightSavingTimeOffset(tz); 
+            //tz = parseInt(tz) + daylightSavingTimeOffset(tz); 
             var utc_until = tzDateUntil.getTime() + (parseInt(tz) * 60 * 60000 *(-1));             
             
             //server end date - America/Denver UTC-7h            
@@ -586,12 +586,12 @@
                 break;
             case 1: //unit=h/m from
                 time_hr='time-hr-from-hm';
-                time_min='time-min-from-hr';
+                time_min='time-min-from-hm';
                 ampm='ampm-from-hm';
                 break;
             case 2: //unit=h/m until
                 time_hr='time-hr-until-hm';
-                time_min='time-min-until-hr';
+                time_min='time-min-until-hm';
                 ampm='ampm-until-hm';
                 break;
             case 3://unit=d from
@@ -726,10 +726,55 @@
           var hr = document.getElementById('time-hr').value;
           var min = document.getElementById('time-min').value;
           var ampm = document.getElementById('ampm').value;
+          
           hr = ampm === 'PM' ? (hr % 12) + 12 : hr % 12;
           var dt = new Date(document.getElementById('datepicker').value + ' ' + hr + ':' + min);
           return dt;
-      }; 
+    };
+    
+    var getScheduledTime2 = function (timeType) {
+        var dt;
+        var hr;
+        var min;
+        var ampm;        
+        
+        switch (timeType) {
+            case 0:
+                dt=document.getElementById('datepicker').value;
+                hr = document.getElementById('time-hr').value;
+                min = document.getElementById('time-min').value;
+                ampm = document.getElementById('ampm').value;
+                break;
+            case 1: //unit=h/m from
+                dt=document.getElementById('datepicker-from').value;
+                hr = document.getElementById('time-hr-from-hm').value;
+                min = document.getElementById('time-min-from-hm').value;
+                ampm = document.getElementById('ampm-from-hm').value;
+                break;
+            case 2: //unit=h/m until
+                dt=document.getElementById('datepicker-to').value;
+                hr = document.getElementById('time-hr-until-hm').value;
+                min = document.getElementById('time-min-until-hm').value;
+                ampm = document.getElementById('ampm-until-hm').value;
+                break;
+            case 3://unit=d from
+                dt=document.getElementById('datepicker-from').value;
+                hr = document.getElementById('time-hr-from-day').value;
+                min = document.getElementById('time-min-from-day').value;
+                ampm = document.getElementById('ampm-from-day').value;
+                break;
+            case 4://unit=d until
+                dt=document.getElementById('datepicker-to').value;
+                hr = document.getElementById('time-hr-from-day').value;
+                min = document.getElementById('time-min-from-day').value;
+                ampm = document.getElementById('ampm-from-day').value;
+                break;
+        }        
+        hr = ampm === 'PM' ? (hr % 12) + 12 : hr % 12;
+        var result = new Date(dt + ' ' + hr + ':' + min);
+        return result;
+    };
+    
       
     var validateSchedule = function () {
     	  var scheduleDateTime = getScheduledTime();

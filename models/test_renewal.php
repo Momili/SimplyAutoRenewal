@@ -113,9 +113,12 @@
             $stmt->bindParam(':Sat', $this->Sat);
             $stmt->bindParam(':TargetTZ', $this->TargetTZ);
             $stmt->bindParam(':LocalTZ', $this->LocalTZ);
-    
+            
+            echo $query;
+            
             // execute query
             $stmt->execute();
+            
         }catch(PDOException $e){
             echo $query . "<br>" . $e->getMessage();
         }
