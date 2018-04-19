@@ -722,7 +722,7 @@
           }
       };
 
-    var getScheduledTime = function () {
+    var getScheduledTime_old = function () {
           var hr = document.getElementById('time-hr').value;
           var min = document.getElementById('time-min').value;
           var ampm = document.getElementById('ampm').value;
@@ -732,7 +732,7 @@
           return dt;
     };
     
-    var getScheduledTime2 = function (timeType) {
+    var getScheduledTime = function (timeType) {
         var dt;
         var hr;
         var min;
@@ -773,14 +773,31 @@
         hr = ampm === 'PM' ? (hr % 12) + 12 : hr % 12;
         var result = new Date(dt + ' ' + hr + ':' + min);
         return result;
-    };
-    
+    };    
       
     var validateSchedule = function () {
-    	  var scheduleDateTime = getScheduledTime();
-          var timeZoneDatetime = calcSelectedZoneDateTime();      
-          return (scheduleDateTime > timeZoneDatetime);         
-      };   
+        var scheduleDateTime;
+        var scheduleDateTimeTo;
+        var repeat=document.getElementById('repeat').value;
+        var unit=document.getElementById('unit').value
+        var timeZoneDatetime = calcSelectedZoneDateTime();      
+        
+         if(repeat==='1'){ 
+             scheduleDateTime = getScheduledTime(0);
+             return (scheduleDateTime > timeZoneDatetime?0:1);         
+         }else{
+            
+            if(unit==='d'){
+                scheduleDateTime = getScheduledTime(3);
+                scheduleDateTimeTo = getScheduledTime(4);
+            }else{
+              scheduleDateTime = getScheduledTime(1);
+              scheduleDateTimeTo = getScheduledTime(2);
+            }
+            return (scheduleDateTime>scheduleDateTimeTo?2:scheduleDateTime>timeZoneDatetime?0:1);
+         }        
+         
+    };   
      
     var getRecurrence  = function(){        
         var rec ='"recurrence":[{"repeat":"'+document.getElementById('repeat').value+'"\n\

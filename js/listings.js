@@ -174,7 +174,7 @@ app.controller('listingsController', ['$scope','$http', '$rootScope', function($
         var listItem='{"UserID":"'+jobj.UserID+'"\n\
                ,"ShopID":"'+jobj.ShopID+'"\n\
                ,"ItemID":"'+jobj.ItemID+'"\n\
-               ,"Title":"'+jobj.Title+'"\n\
+               ,"Title":"'+encodeURIComponent(jobj.Title)+'"\n\
                ,"Quantity":"'+jobj.Quantity+'"\n\
                ,"Views":"'+jobj.Views+'"\n\
                ,"Likes":"'+jobj.Likes+'"\n\
@@ -187,10 +187,11 @@ app.controller('listingsController', ['$scope','$http', '$rootScope', function($
     
     $scope.schedule=function(){
 
-    		if (validateSchedule()===false) {
+    		if (validateSchedule()===1) {
     			window.alert('Scheduled date/time must be later than selected time-zone current date/time.');
-    		}
-    		else{   
+    		}else if (validateSchedule()===2) {
+    			window.alert('Scheduled until date/time must be later than scheduled from date/time.');
+    		}else{   
 	            setTimeZone();
                     var rec = getRecurrence();
 	            var jsonStr = '{"renewals":[],'+rec+'}';
